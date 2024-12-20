@@ -197,6 +197,7 @@ const FundingCalculator = () => {
     phone: '',
   });
   const [estimatedAmount, setEstimatedAmount] = useState(null);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     setFormData({
@@ -215,36 +216,53 @@ const FundingCalculator = () => {
 
   const calculateFunding = (e) => {
     e.preventDefault();
-    console.log('Calculating funding...');
+    setError('');
     
-    // Calculate funding amount (110% of monthly revenue)
-    let baseAmount = parseFloat(formData.monthlyRevenue) * 1.1;
-    
-    // Round to nearest 5k
-    baseAmount = Math.round(baseAmount / 5000) * 5000;
-    
-    // Cap at 500k if needed
-    const fundingAmount = Math.min(baseAmount, 500000);
-    
-    // Calculate total repayment with 20% simple interest
-    const interestAmount = fundingAmount * 0.20;
-    const totalRepayment = fundingAmount + interestAmount;
-    
-    // Calculate weekly payment (52 weeks in a year)
-    const weeklyPayment = Math.round(totalRepayment / 52);
+    try {
+      const monthlyRevenue = parseCurrency(formData.monthlyRevenue);
+      
+      if (isNaN(monthlyRevenue) || monthlyRevenue <= 0) {
+        setError('Please enter a valid monthly revenue amount');
+        return;
+      }
+      
+      // Calculate funding amount (110% of monthly revenue)
+      let baseAmount = parseFloat(monthlyRevenue) * 1.1;
+      console.log('Base amount before rounding:', baseAmount);
+      
+      // Round to nearest 5k
+      baseAmount = Math.round(baseAmount / 5000) * 5000;
+      console.log('Base amount after rounding:', baseAmount);
+      
+      // Cap at 500k if needed
+      const fundingAmount = Math.min(baseAmount, 500000);
+      
+      // Calculate total repayment with 20% simple interest
+      const interestAmount = fundingAmount * 0.20;
+      const totalRepayment = fundingAmount + interestAmount;
+      
+      // Calculate weekly payment (52 weeks in a year)
+      const weeklyPayment = Math.round(totalRepayment / 52);
 
-    // Update the result display
-    setEstimatedAmount({
-      fundingAmount,
-      weeklyPayment,
-      totalRepayment
-    });
-    
-    console.log('Funding amount:', fundingAmount);
-    console.log('Weekly payment:', weeklyPayment);
-    console.log('Total repayment:', totalRepayment);
-    
-    nextStep();
+      // Update the result display
+      setEstimatedAmount({
+        fundingAmount,
+        weeklyPayment,
+        totalRepayment
+      });
+      
+      console.log('Final calculations:', {
+        fundingAmount,
+        weeklyPayment,
+        totalRepayment
+      });
+      
+      nextStep();
+    } catch (err) {
+      console.error('Calculation error:', err);
+      setError('There was an error calculating your funding. Please try again.');
+      return;
+    }
   };
 
   const handleMonthlyRevenueChange = (e) => {
@@ -528,6 +546,11 @@ const FundingCalculator = () => {
             {renderStep()}
           </AnimatePresence>
         </CalculatorContainer>
+        {error && (
+          <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>
+            {error}
+          </div>
+        )}
       </Container>
     </Section>
   );
