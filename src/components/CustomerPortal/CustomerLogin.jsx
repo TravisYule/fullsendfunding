@@ -18,28 +18,36 @@ const Section = styled.section`
 const LoginContainer = styled(motion.div)`
   max-width: 400px;
   width: 100%;
-  padding: 2.5rem;
+  padding: 2rem;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+`;
+
+const LogoContainer = styled.div`
+  text-align: center;
+  margin-bottom: 1.5rem;
 `;
 
 const LogoImage = styled.img`
-  height: 100px;
+  height: 80px;
   width: auto;
+  margin-bottom: 1rem;
 `;
 
 const Title = styled.h1`
   color: ${props => props.theme.colors.primary};
-  text-align: center;
   margin-bottom: 2rem;
-  font-size: 2rem;
+  font-size: 1.75rem;
+  text-align: center;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-bottom: 1.5rem;
 `;
 
 const InputGroup = styled.div`
@@ -54,6 +62,7 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  background: ${props => props.theme.colors.lightGray};
   box-sizing: border-box;
 
   &:focus {
@@ -71,14 +80,15 @@ const Icon = styled.div`
 `;
 
 const Button = styled.button`
+  width: 100%;
+  padding: 0.75rem;
   background: ${props => props.theme.colors.secondary};
   color: white;
-  padding: 0.75rem;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 
   &:hover {
     background: ${props => props.theme.colors.primary};
@@ -100,8 +110,8 @@ const ForgotPassword = styled.a`
   color: ${props => props.theme.colors.primary};
   text-decoration: none;
   font-size: 0.9rem;
+  display: inline-block;
   margin-top: 1rem;
-  display: block;
 
   &:hover {
     color: ${props => props.theme.colors.secondary};
@@ -190,7 +200,9 @@ const CustomerLogin = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <LogoImage src={Logo} alt="Full Send Funding" />
+        <LogoContainer>
+          <LogoImage src={Logo} alt="Full Send Funding" />
+        </LogoContainer>
         <Title>Customer Portal</Title>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <Form onSubmit={handleSubmit}>
