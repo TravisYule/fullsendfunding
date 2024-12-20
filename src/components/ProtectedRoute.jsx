@@ -16,38 +16,39 @@ const ProtectedRoute = ({ children }) => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        console.log('No session found');
         setHasAccess(false);
         setLoading(false);
         return;
       }
 
-      console.log('Session found for user:', session.user.id);
-
-      const { data: profile, error: profileError } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', session.user.id)
         .single();
 
-      if (profileError) {
-        console.error('Profile fetch error:', profileError);
-        throw profileError;
-      }
-
-      console.log('User role:', profile?.role);
-
       // Check access based on path and role
-      if (location.pathname.includes('/partner-dashboard')) {
-        const hasPartnerAccess = profile?.role === 'admin' || profile?.role === 'partner';
-        console.log('Partner access:', hasPartnerAccess);
-        setHasAccess(hasPartnerAccess);
-      } else if (location.pathname.includes('/customer-dashboard')) {
-        const hasCustomerAccess = profile?.role === 'admin' || profile?.role === 'customer';
-        console.log('Customer access:', hasCustomerAccess);
-        setHasAccess(hasCustomerAccess);
+      if (location.pathname.includes('/partner')) {
+        // For partner portal paths
+        if (profile?.role === 'admin' || profile?.role === 'partner') {
+          setHasAccess(true);
+        } else {
+          // Only sign out if explicitly trying to access partner routes as non-partner
+          await supabase.auth.signOut();
+          setHasAccess(false);
+        }
+      } else if (location.pathname.includes('/customer')) {
+        // For customer portal paths
+        if (profile?.role === 'admin' || profile?.role === 'customer') {
+          setHasAccess(true);
+        } else {
+          // Only sign out if explicitly trying to access customer routes as non-customer
+          await supabase.auth.signOut();
+          setHasAccess(false);
+        }
       } else {
-        setHasAccess(false);
+        // For any other protected routes, require authentication
+        setHasAccess(!!session);
       }
     } catch (error) {
       console.error('Access check error:', error);
@@ -62,10 +63,9 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!hasAccess) {
-    // Redirect to appropriate login based on attempted access
-    if (location.pathname.includes('/partner-dashboard')) {
+    if (location.pathname.includes('/partner')) {
       return <Navigate to="/partner-login" />;
-    } else if (location.pathname.includes('/customer-dashboard')) {
+    } else if (location.pathname.includes('/customer')) {
       return <Navigate to="/customer-login" />;
     } else {
       return <Navigate to="/" />;
