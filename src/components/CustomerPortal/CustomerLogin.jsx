@@ -16,7 +16,7 @@ import {
   Button,
   ErrorMessage,
   ForgotPassword
-} from '../Shared/PortalStyles';
+} from '../Shared/PortalStyles.js';
 
 const CustomerLogin = () => {
   const navigate = useNavigate();
