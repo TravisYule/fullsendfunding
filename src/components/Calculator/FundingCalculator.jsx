@@ -157,6 +157,12 @@ const Step = styled.div`
   border-radius: 50%;
   background: ${props => props.active ? props.theme.colors.secondary : '#ddd'};
   transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -283,6 +289,12 @@ const FundingCalculator = () => {
     }));
     // Navigate to full application
     navigate('/apply');
+  };
+
+  const goToStep = (stepNumber) => {
+    if (stepNumber <= Math.min(step + 1, 4)) {
+      setStep(stepNumber);
+    }
   };
 
   const renderStep = () => {
@@ -539,7 +551,15 @@ const FundingCalculator = () => {
         <CalculatorContainer>
           <StepIndicator>
             {[1, 2, 3, 4].map((i) => (
-              <Step key={i} active={i <= step} />
+              <Step 
+                key={i} 
+                active={i <= step}
+                onClick={() => goToStep(i)}
+                style={{ 
+                  cursor: i <= Math.min(step + 1, 4) ? 'pointer' : 'not-allowed',
+                  opacity: i <= Math.min(step + 1, 4) ? 1 : 0.5 
+                }}
+              />
             ))}
           </StepIndicator>
           <AnimatePresence mode="wait">
