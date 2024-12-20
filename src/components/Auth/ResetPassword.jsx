@@ -112,10 +112,15 @@ const ResetPassword = () => {
     setError('');
     setMessage('');
 
+    // Get the base URL based on environment
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://fullsendfunding.com'
+      : window.location.origin;
+
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'https://fullsendfunding.com/reset-password?type=reset',
-        emailRedirectTo: 'https://fullsendfunding.com/reset-password?type=reset',
+        redirectTo: `${baseUrl}/reset-password?type=reset`,
+        emailRedirectTo: `${baseUrl}/reset-password?type=reset`,
         data: {
           company: 'Full Send Funding',
           sender_name: 'Full Send Funding Team'
@@ -143,9 +148,15 @@ const ResetPassword = () => {
       });
 
       if (error) throw error;
+
+      // Sign out the user after successful password reset
+      await supabase.auth.signOut();
+
       setMessage('Password has been successfully reset. Redirecting to login...');
       const redirectPath = searchParams.get('portal') === 'customer' ? '/customer-login' : '/partner-login';
-      setTimeout(() => navigate(redirectPath), 3000);
+      
+      // Immediate redirect after signout
+      navigate(redirectPath);
     } catch (error) {
       setError(error.message);
     } finally {
