@@ -22,29 +22,41 @@ const SectionTitle = styled.h2`
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  padding: 0 1rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
     gap: 1rem;
+    padding: 0 1rem;
   }
 `;
 
-const Card = styled.div`
+const Card = styled(motion.div)`
+  background: white;
   padding: 2rem;
   text-align: center;
-  background: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     padding: 1.5rem;
-    margin: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 320px;
   }
 `;
 
@@ -54,18 +66,22 @@ const IconWrapper = styled.div`
   margin-bottom: 1rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 60px;
 `;
 
 const IndustryTitle = styled.h3`
   color: ${props => props.theme.colors.primary};
   margin-bottom: 1rem;
   font-size: 1.25rem;
+  text-align: center;
 `;
 
 const Description = styled.p`
   color: ${props => props.theme.colors.text};
   font-size: 0.9rem;
   line-height: 1.5;
+  text-align: center;
 `;
 
 const industries = [
