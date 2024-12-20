@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaLock, FaUser } from 'react-icons/fa';
@@ -120,6 +120,27 @@ const PartnerLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    checkExistingSession();
+  }, []);
+
+  const checkExistingSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile?.role === 'admin' || profile?.role === 'partner') {
+        navigate('/partner-dashboard');
+      } else {
+        await supabase.auth.signOut();
+      }
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -133,6 +154,8 @@ const PartnerLogin = () => {
     setIsLoading(true);
 
     try {
+      await supabase.auth.signOut();
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,

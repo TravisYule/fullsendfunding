@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaLock, FaUser } from 'react-icons/fa';
@@ -117,6 +117,29 @@ const CustomerLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Add session check on mount
+  useEffect(() => {
+    checkExistingSession();
+  }, []);
+
+  const checkExistingSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile?.role === 'admin' || profile?.role === 'customer') {
+        navigate('/customer-dashboard');
+      } else {
+        // Sign out if wrong role
+        await supabase.auth.signOut();
+      }
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -130,6 +153,9 @@ const CustomerLogin = () => {
     setIsLoading(true);
 
     try {
+      // First sign out of any existing session
+      await supabase.auth.signOut();
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
@@ -143,12 +169,10 @@ const CustomerLogin = () => {
         .eq('id', data.user.id)
         .single();
 
-      // Only allow customers and admins
       if (profile?.role === 'admin' || profile?.role === 'customer') {
         navigate('/customer-dashboard');
       } else {
         setError('Invalid customer credentials');
-        // Sign out if not a customer or admin
         await supabase.auth.signOut();
       }
       
