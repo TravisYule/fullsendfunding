@@ -24,15 +24,9 @@ const TopBarContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 0 1rem;
-`;
-
-const TopBarRight = styled.div`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
 `;
 
 const TopBarItem = styled.a`
@@ -71,12 +65,6 @@ const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   height: 100%;
-`;
-
-const LogoSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2rem;
 `;
 
 const LogoLink = styled(Link)`
@@ -267,14 +255,12 @@ const Header = () => {
     <>
       <TopBar>
         <TopBarContent>
-          <TopBarRight>
-            <TopBarItem href="tel:518-312-0382">
-              <FaPhone /> Call Us Today at 518-312-0382
-            </TopBarItem>
-            <TopBarItem href="mailto:travis@fullsendfunding.com">
-              <FaEnvelope /> travis@fullsendfunding.com
-            </TopBarItem>
-          </TopBarRight>
+          <TopBarItem href="tel:518-312-0382">
+            <FaPhone /> Call Us Today at 518-312-0382
+          </TopBarItem>
+          <TopBarItem href="mailto:travis@fullsendfunding.com">
+            <FaEnvelope /> travis@fullsendfunding.com
+          </TopBarItem>
         </TopBarContent>
       </TopBar>
       <HeaderContainer>
