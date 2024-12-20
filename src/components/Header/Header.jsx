@@ -24,10 +24,15 @@ const TopBarContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
+`;
+
+const TopBarRight = styled.div`
+  display: flex;
   gap: 2rem;
+  align-items: center;
 `;
 
 const TopBarItem = styled.a`
@@ -42,6 +47,21 @@ const TopBarItem = styled.a`
   }
 `;
 
+const TopBarApplyButton = styled(Link)`
+  background: ${props => props.theme.colors.secondary};
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: background 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.theme.colors.accent};
+  }
+`;
+
 const HeaderContainer = styled.header`
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(5px);
@@ -53,7 +73,7 @@ const HeaderContainer = styled.header`
   top: 28px;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    height: 60px;
+    height: 70px;
     top: 0;
   }
 `;
@@ -84,7 +104,7 @@ const LogoImage = styled.img`
   width: auto;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    height: 50px;
+    height: 60px;
   }
 `;
 
@@ -97,7 +117,6 @@ const CompanyName = styled.h1`
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     font-size: 1rem;
-    display: none;
   }
 `;
 
@@ -221,6 +240,26 @@ const HamburgerButton = styled.button`
   }
 `;
 
+const MobileApplyButton = styled(Link)`
+  display: none;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: ${props => props.theme.colors.secondary};
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+`;
+
 const Header = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
@@ -232,12 +271,15 @@ const Header = () => {
     <>
       <TopBar>
         <TopBarContent>
-          <TopBarItem href="tel:518-312-0382">
-            <FaPhone /> Call Us Today at 518-312-0382
-          </TopBarItem>
-          <TopBarItem href="mailto:travis@fullsendfunding.com">
-            <FaEnvelope /> travis@fullsendfunding.com
-          </TopBarItem>
+          <TopBarApplyButton to="/apply">Apply Now</TopBarApplyButton>
+          <TopBarRight>
+            <TopBarItem href="tel:518-312-0382">
+              <FaPhone /> Call Us Today at 518-312-0382
+            </TopBarItem>
+            <TopBarItem href="mailto:travis@fullsendfunding.com">
+              <FaEnvelope /> travis@fullsendfunding.com
+            </TopBarItem>
+          </TopBarRight>
         </TopBarContent>
       </TopBar>
       <HeaderContainer>
@@ -266,6 +308,9 @@ const Header = () => {
           </NavLinks>
         </Nav>
       </HeaderContainer>
+      <MobileApplyButton to="/apply">
+        Apply Now - Get Funded Today
+      </MobileApplyButton>
     </>
   );
 };
