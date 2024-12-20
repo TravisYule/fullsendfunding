@@ -267,14 +267,17 @@ const MobileApplyButton = styled(Link)`
 
 const PortalButtons = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
+  align-items: center;
 `;
 
 const PortalButton = styled(Link)`
   color: white;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: color 0.3s ease;
+  padding: 0.5rem 1rem;
+  display: inline-block;
 
   &:hover {
     color: ${props => props.theme.colors.secondary};
