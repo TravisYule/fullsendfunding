@@ -292,7 +292,7 @@ const FundingCalculator = () => {
   };
 
   const goToStep = (stepNumber) => {
-    if (stepNumber <= Math.min(step + 1, 4)) {
+    if (stepNumber < step) {
       setStep(stepNumber);
     }
   };
@@ -556,8 +556,8 @@ const FundingCalculator = () => {
                 active={i <= step}
                 onClick={() => goToStep(i)}
                 style={{ 
-                  cursor: i <= Math.min(step + 1, 4) ? 'pointer' : 'not-allowed',
-                  opacity: i <= Math.min(step + 1, 4) ? 1 : 0.5 
+                  cursor: i < step ? 'pointer' : 'default',
+                  opacity: i <= step ? 1 : 0.5 
                 }}
               />
             ))}
