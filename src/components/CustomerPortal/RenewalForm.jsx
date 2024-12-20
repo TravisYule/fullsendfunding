@@ -65,12 +65,30 @@ const SignatureSection = styled.div`
   margin-bottom: 2rem;
 `;
 
-const SignatureInput = styled.input`
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  color: ${props => props.theme.colors.text};
+`;
+
+const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+const SignatureText = styled.span`
+  font-size: 0.9rem;
 `;
 
 const ButtonGroup = styled.div`
@@ -97,7 +115,7 @@ const Button = styled(motion.button)`
 const RenewalForm = () => {
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
-  const [signature, setSignature] = useState('');
+  const [isAgreed, setIsAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFileChange = (e) => {
@@ -114,7 +132,6 @@ const RenewalForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Here you would upload files to Supabase storage
       const { data: { user } } = await supabase.auth.getUser();
       
       for (const file of files) {
@@ -125,12 +142,11 @@ const RenewalForm = () => {
         if (error) throw error;
       }
 
-      // Create renewal request record
       const { error } = await supabase
         .from('renewal_requests')
         .insert({
           user_id: user.id,
-          signature,
+          agreed_to_terms: isAgreed,
           status: 'pending',
           submitted_at: new Date().toISOString()
         });
@@ -180,15 +196,22 @@ const RenewalForm = () => {
         </FileUploadSection>
 
         <SignatureSection>
-          <h3>Digital Signature</h3>
-          <p>Type your full name as signature</p>
-          <SignatureInput
-            type="text"
-            value={signature}
-            onChange={(e) => setSignature(e.target.value)}
-            placeholder="Your full name"
-            required
-          />
+          <h3>Electronic Signature</h3>
+          <CheckboxContainer>
+            <CheckboxLabel>
+              <Checkbox
+                type="checkbox"
+                checked={isAgreed}
+                onChange={(e) => setIsAgreed(e.target.checked)}
+                required
+              />
+              <SignatureText>
+                By checking this box, I hereby agree to submit these bank statements
+                for renewal consideration and certify that all information provided is
+                true and accurate.
+              </SignatureText>
+            </CheckboxLabel>
+          </CheckboxContainer>
         </SignatureSection>
 
         <ButtonGroup>
@@ -203,7 +226,7 @@ const RenewalForm = () => {
           </Button>
           <Button
             type="submit"
-            disabled={isSubmitting || files.length < 4 || !signature}
+            disabled={isSubmitting || files.length < 4 || !isAgreed}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
