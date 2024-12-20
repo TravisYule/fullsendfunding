@@ -36,6 +36,7 @@ const PartnerLogin = lazy(() => import('./components/PartnerPortal/PartnerLogin'
 const PartnerDashboard = lazy(() => import('./components/PartnerPortal/PartnerDashboard'));
 const CustomerLogin = lazy(() => import('./components/CustomerPortal/CustomerLogin'));
 const CustomerDashboard = lazy(() => import('./components/CustomerPortal/CustomerDashboard'));
+const RenewalForm = lazy(() => import('./components/CustomerPortal/RenewalForm'));
 
 function App() {
   return (
@@ -90,6 +91,14 @@ function App() {
             <Suspense fallback={<div>Loading...</div>}>
               <ProtectedRoute>
                 <CustomerDashboard />
+              </ProtectedRoute>
+            </Suspense>
+          } />
+
+          <Route path="/renewal" element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProtectedRoute>
+                <RenewalForm />
               </ProtectedRoute>
             </Suspense>
           } />
