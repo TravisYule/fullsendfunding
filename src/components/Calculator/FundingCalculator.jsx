@@ -190,6 +190,7 @@ const FundingCalculator = () => {
     email: '',
     phone: '',
   });
+  const [estimatedAmount, setEstimatedAmount] = useState(null);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -208,16 +209,35 @@ const FundingCalculator = () => {
 
   const calculateFunding = (e) => {
     e.preventDefault();
-    let baseAmount = parseFloat(formData.monthlyRevenue) * 1.5;
+    console.log('Calculating funding...');
     
-    if (formData.timeInBusiness === '2+') baseAmount *= 1.2;
-    if (formData.timeInBusiness === '5+') baseAmount *= 1.3;
+    // Calculate funding amount (110% of monthly revenue)
+    let baseAmount = parseFloat(formData.monthlyRevenue) * 1.1;
     
-    if (formData.creditScore === '650-700') baseAmount *= 1.1;
-    if (formData.creditScore === '700+') baseAmount *= 1.2;
+    // Round to nearest 5k
+    baseAmount = Math.round(baseAmount / 5000) * 5000;
     
-    const finalAmount = Math.min(baseAmount, 500000);
-    setEstimatedAmount(finalAmount);
+    // Cap at 500k if needed
+    const fundingAmount = Math.min(baseAmount, 500000);
+    
+    // Calculate total repayment with 20% simple interest
+    const interestAmount = fundingAmount * 0.20;
+    const totalRepayment = fundingAmount + interestAmount;
+    
+    // Calculate weekly payment (52 weeks in a year)
+    const weeklyPayment = Math.round(totalRepayment / 52);
+
+    // Update the result display
+    setEstimatedAmount({
+      fundingAmount,
+      weeklyPayment,
+      totalRepayment
+    });
+    
+    console.log('Funding amount:', fundingAmount);
+    console.log('Weekly payment:', weeklyPayment);
+    console.log('Total repayment:', totalRepayment);
+    
     nextStep();
   };
 
@@ -246,11 +266,17 @@ const FundingCalculator = () => {
             <InputGroup>
               <Label>Monthly Revenue</Label>
               <Input
-                type="number"
+                type="text"
                 name="monthlyRevenue"
                 placeholder="Enter average monthly revenue"
                 value={formData.monthlyRevenue}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '');
+                  setFormData({
+                    ...formData,
+                    monthlyRevenue: value
+                  });
+                }}
                 required
               />
             </InputGroup>
@@ -393,9 +419,20 @@ const FundingCalculator = () => {
         return (
           <ResultContainer>
             <EstimatedAmount>
-              <FaDollarSign />{estimatedAmount.toLocaleString()}
+              <FaDollarSign />{estimatedAmount.fundingAmount.toLocaleString()}
             </EstimatedAmount>
             <p>Estimated Available Funding*</p>
+            <div style={{ margin: '1.5rem 0' }}>
+              <h3 style={{ color: props => props.theme.colors.primary, marginBottom: '0.5rem' }}>
+                Estimated Weekly Payment: ${estimatedAmount.weeklyPayment.toLocaleString()}
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                12-month term at 20% simple interest
+              </p>
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                Total Repayment: ${estimatedAmount.totalRepayment.toLocaleString()}
+              </p>
+            </div>
             <small>*Final approval and terms subject to underwriting review</small>
             
             <Form>
