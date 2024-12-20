@@ -265,6 +265,22 @@ const MobileApplyButton = styled(Link)`
   }
 `;
 
+const PortalButtons = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const PortalButton = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: ${props => props.theme.colors.secondary};
+  }
+`;
+
 const Header = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
@@ -292,9 +308,10 @@ const Header = () => {
               <FaEnvelope /> travis@fullsendfunding.com
             </TopBarItem>
           </TopBarLeft>
-          <PortalLink to="/partner-login">
-            Partner Portal
-          </PortalLink>
+          <PortalButtons>
+            <PortalButton to="/customer-login">Customer Portal</PortalButton>
+            <PortalButton to="/partner-login">Partner Portal</PortalButton>
+          </PortalButtons>
         </TopBarContent>
       </TopBar>
       <HeaderContainer>

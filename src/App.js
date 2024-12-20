@@ -34,6 +34,8 @@ const MainContent = styled.main`
 // Lazy load the partner portal components
 const PartnerLogin = lazy(() => import('./components/PartnerPortal/PartnerLogin'));
 const PartnerDashboard = lazy(() => import('./components/PartnerPortal/PartnerDashboard'));
+const CustomerLogin = lazy(() => import('./components/CustomerPortal/CustomerLogin'));
+const CustomerDashboard = lazy(() => import('./components/CustomerPortal/CustomerDashboard'));
 
 function App() {
   return (
@@ -74,6 +76,20 @@ function App() {
             <Suspense fallback={<div>Loading...</div>}>
               <ProtectedRoute>
                 <PartnerDashboard />
+              </ProtectedRoute>
+            </Suspense>
+          } />
+
+          {/* Customer Portal routes */}
+          <Route path="/customer-login" element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <CustomerLogin />
+            </Suspense>
+          } />
+          <Route path="/customer-dashboard" element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProtectedRoute>
+                <CustomerDashboard />
               </ProtectedRoute>
             </Suspense>
           } />
