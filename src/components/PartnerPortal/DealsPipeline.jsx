@@ -12,14 +12,16 @@ const PipelineContainer = styled.div`
 
 const StagesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  overflow-x: auto;
-  padding: 1rem 0;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  background: ${props => props.theme.colors.primary};
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
 `;
 
 const StageColumn = styled(motion.div)`
-  background: ${props => props.theme.colors.lightGray};
+  background: white;
   padding: 1rem;
   border-radius: 6px;
   min-height: 200px;
@@ -29,7 +31,7 @@ const StageColumn = styled(motion.div)`
   &:hover {
     ${props => props.clickable && `
       transform: translateY(-5px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     `}
   }
 `;
