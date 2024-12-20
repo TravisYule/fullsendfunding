@@ -247,15 +247,16 @@ const MobileApplyButton = styled(Link)`
 const Header = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
-  const handleDropdownItemClick = () => {
-    setIsAboutOpen(false);
-  };
-
-  const handleLogoClick = () => {
+  const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
+  };
+
+  const handleDropdownItemClick = () => {
+    setIsAboutOpen(false);
+    handleScrollToTop();
   };
 
   return (
@@ -272,7 +273,7 @@ const Header = () => {
       </TopBar>
       <HeaderContainer>
         <Nav>
-          <LogoLink to="/" onClick={handleLogoClick}>
+          <LogoLink to="/" onClick={handleScrollToTop}>
             <LogoImage src={Logo} alt="Full Send Funding" />
             <CompanyName>Full Send Funding</CompanyName>
           </LogoLink>
@@ -288,15 +289,15 @@ const Header = () => {
                 <DropdownItem to="/contact" onClick={handleDropdownItemClick}>Contact</DropdownItem>
               </Dropdown>
             </NavItem>
-            <NavLink to="/process">How It Works</NavLink>
-            <NavLink to="/faqs">FAQs</NavLink>
-            <NavLink to="/partner">Become A Partner</NavLink>
-            <NavLink to="/testimonials">Testimonials</NavLink>
-            <ApplyButton to="/apply">Apply Now</ApplyButton>
+            <NavLink to="/process" onClick={handleScrollToTop}>How It Works</NavLink>
+            <NavLink to="/faqs" onClick={handleScrollToTop}>FAQs</NavLink>
+            <NavLink to="/partner" onClick={handleScrollToTop}>Become A Partner</NavLink>
+            <NavLink to="/testimonials" onClick={handleScrollToTop}>Testimonials</NavLink>
+            <ApplyButton to="/apply" onClick={handleScrollToTop}>Apply Now</ApplyButton>
           </NavLinks>
         </Nav>
       </HeaderContainer>
-      <MobileApplyButton to="/apply">
+      <MobileApplyButton to="/apply" onClick={handleScrollToTop}>
         Apply Now - Get Funded Today
       </MobileApplyButton>
     </>
