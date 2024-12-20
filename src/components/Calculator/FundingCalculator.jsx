@@ -34,6 +34,8 @@ const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
+  margin-bottom: 2rem;
 `;
 
 const Label = styled.label`
@@ -63,36 +65,12 @@ const Select = styled.select`
   background: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
+  transform-origin: top;
   
   &:focus {
     border-color: ${props => props.theme.colors.secondary};
     outline: none;
     box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
-  }
-`;
-
-const SelectWrapper = styled.div`
-  position: relative;
-  
-  select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    border: solid ${props => props.theme.colors.primary};
-    border-width: 0 2px 2px 0;
-    padding: 3px;
-    transform: translateY(-50%) rotate(45deg);
-    pointer-events: none;
   }
 `;
 
@@ -273,36 +251,34 @@ const FundingCalculator = () => {
           <Form>
             <InputGroup>
               <Label>Type of Business</Label>
-              <SelectWrapper>
-                <Select
-                  name="businessType"
-                  value={formData.businessType}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Select business type</option>
-                  <option value="retail">Retail Store</option>
-                  <option value="restaurant">Restaurant/Bar</option>
-                  <option value="automotive">Automotive</option>
-                  <option value="construction">Construction/Contractor</option>
-                  <option value="healthcare">Healthcare/Medical</option>
-                  <option value="manufacturing">Manufacturing</option>
-                  <option value="transportation">Transportation/Logistics</option>
-                  <option value="wholesale">Wholesale/Distribution</option>
-                  <option value="professional">Professional Services</option>
-                  <option value="salon">Beauty Salon/Spa</option>
-                  <option value="fitness">Fitness/Gym</option>
-                  <option value="hotel">Hotel/Hospitality</option>
-                  <option value="ecommerce">E-commerce</option>
-                  <option value="technology">Technology/IT</option>
-                  <option value="cleaning">Cleaning Services</option>
-                  <option value="landscaping">Landscaping</option>
-                  <option value="agriculture">Agriculture/Farming</option>
-                  <option value="entertainment">Entertainment/Events</option>
-                  <option value="education">Education/Training</option>
-                  <option value="other">Other Business Type</option>
-                </Select>
-              </SelectWrapper>
+              <Select
+                name="businessType"
+                value={formData.businessType}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select business type</option>
+                <option value="retail">Retail Store</option>
+                <option value="restaurant">Restaurant/Bar</option>
+                <option value="automotive">Automotive</option>
+                <option value="construction">Construction/Contractor</option>
+                <option value="healthcare">Healthcare/Medical</option>
+                <option value="manufacturing">Manufacturing</option>
+                <option value="transportation">Transportation/Logistics</option>
+                <option value="wholesale">Wholesale/Distribution</option>
+                <option value="professional">Professional Services</option>
+                <option value="salon">Beauty Salon/Spa</option>
+                <option value="fitness">Fitness/Gym</option>
+                <option value="hotel">Hotel/Hospitality</option>
+                <option value="ecommerce">E-commerce</option>
+                <option value="technology">Technology/IT</option>
+                <option value="cleaning">Cleaning Services</option>
+                <option value="landscaping">Landscaping</option>
+                <option value="agriculture">Agriculture/Farming</option>
+                <option value="entertainment">Entertainment/Events</option>
+                <option value="education">Education/Training</option>
+                <option value="other">Other Business Type</option>
+              </Select>
             </InputGroup>
 
             <InputGroup>
