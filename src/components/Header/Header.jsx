@@ -88,6 +88,12 @@ const Nav = styled.nav`
   height: 100%;
 `;
 
+const LogoSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`;
+
 const LogoLink = styled(Link)`
   display: flex;
   align-items: center;
@@ -260,6 +266,25 @@ const MobileApplyButton = styled(Link)`
   }
 `;
 
+const HeaderApplyButton = styled(Link)`
+  background: ${props => props.theme.colors.secondary};
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+  
+  &:hover {
+    background: ${props => props.theme.colors.accent};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    display: none;
+  }
+`;
+
 const Header = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
@@ -284,10 +309,13 @@ const Header = () => {
       </TopBar>
       <HeaderContainer>
         <Nav>
-          <LogoLink to="/">
-            <LogoImage src={Logo} alt="Full Send Funding" />
-            <CompanyName>Full Send Funding</CompanyName>
-          </LogoLink>
+          <LogoSection>
+            <LogoLink to="/">
+              <LogoImage src={Logo} alt="Full Send Funding" />
+              <CompanyName>Full Send Funding</CompanyName>
+            </LogoLink>
+            <HeaderApplyButton to="/apply">Apply Now</HeaderApplyButton>
+          </LogoSection>
           <NavLinks isOpen={isAboutOpen}>
             <NavItem 
               onMouseEnter={() => setIsAboutOpen(true)}

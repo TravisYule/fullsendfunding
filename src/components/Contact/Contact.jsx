@@ -40,12 +40,16 @@ const Description = styled.p`
 
 const ContactGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1rem;
   }
 `;
 
@@ -58,7 +62,7 @@ const ContactCard = styled(motion.div)`
   transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-10px) scale(1.04);
+    transform: translateY(-10px) scale(1.02);
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   }
 `;
