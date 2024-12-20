@@ -173,6 +173,29 @@ const RequiredNote = styled.p`
   font-style: italic;
 `;
 
+const CheckboxContainer = styled.div`
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: ${props => props.theme.colors.text};
+`;
+
+const Checkbox = styled.input`
+  margin-top: 0.25rem;
+  cursor: pointer;
+`;
+
 const initialFormState = {
   businessName: '',
   ownerName: '',
@@ -208,6 +231,7 @@ const ApplicationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -437,10 +461,28 @@ const ApplicationForm = () => {
             </RequiredNote>
           </FormGroup>
 
+          <CheckboxContainer>
+            <CheckboxLabel>
+              <Checkbox
+                type="checkbox"
+                checked={isAgreed}
+                onChange={(e) => setIsAgreed(e.target.checked)}
+                required
+              />
+              <span>
+                By checking this box, I confirm that all information provided is accurate and true. 
+                I authorize Full Send Funding to verify all submitted information and perform any 
+                necessary credit checks. I understand this serves as my electronic signature for 
+                this application.
+              </span>
+            </CheckboxLabel>
+          </CheckboxContainer>
+
           <SubmitButton
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            disabled={!isAgreed}
           >
             Submit Application
           </SubmitButton>
