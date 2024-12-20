@@ -144,35 +144,32 @@ const CustomerLogin = () => {
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('id, role')
-        .eq('id', authData.user.id)
-        .maybeSingle();
+        .select('role')
+        .filter('id', 'eq', authData.user.id)
+        .limit(1)
+        .single();
 
       if (profileError) {
-        console.log('Profile Error:', profileError);
+        if (profileError.code === 'PGRST116') {
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({
+              id: authData.user.id,
+              role: 'customer'
+            })
+            .single();
+
+          if (insertError) throw insertError;
+          
+          navigate('/customer-dashboard');
+          return;
+        }
         throw profileError;
       }
 
-      console.log('Full profile data:', profile);
-
-      if (!profile) {
-        console.log('No profile found, creating one...');
-        const { error: insertError } = await supabase
-          .from('profiles')
-          .insert([{ 
-            id: authData.user.id, 
-            role: 'customer',
-            created_at: new Date().toISOString()
-          }])
-          .single();
-
-        if (insertError) throw insertError;
-        
-        navigate('/customer-dashboard');
-      } else if (profile.role === 'customer' || profile.role === 'admin') {
+      if (profile?.role === 'customer' || profile?.role === 'admin') {
         navigate('/customer-dashboard');
       } else {
-        console.log('Invalid role:', profile.role);
         setError('Invalid customer credentials');
       }
     } catch (error) {
