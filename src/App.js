@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './components/Header/Header';
@@ -20,9 +20,7 @@ import AccoladeBanner from './components/AccoladeBanner/AccoladeBanner';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Terms from './components/Terms/Terms';
 import FundingCalculator from './components/Calculator/FundingCalculator';
-import PartnerLogin from './components/PartnerPortal/PartnerLogin';
 import ProtectedRoute from './components/ProtectedRoute';
-import PartnerDashboard from './components/PartnerPortal/PartnerDashboard';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -33,6 +31,10 @@ const MainContent = styled.main`
   }
 `;
 
+// Lazy load the partner portal components
+const PartnerLogin = lazy(() => import('./components/PartnerPortal/PartnerLogin'));
+const PartnerDashboard = lazy(() => import('./components/PartnerPortal/PartnerDashboard'));
+
 function App() {
   return (
     <>
@@ -40,6 +42,7 @@ function App() {
       <Header />
       <MainContent>
         <Routes>
+          {/* Main site routes - these should work without Supabase */}
           <Route path="/" element={
             <>
               <Hero />
@@ -60,15 +63,20 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/calculator" element={<FundingCalculator />} />
-          <Route path="/partner-login" element={<PartnerLogin />} />
-          <Route 
-            path="/partner-dashboard" 
-            element={
+
+          {/* Partner Portal routes - wrapped in Suspense for lazy loading */}
+          <Route path="/partner-login" element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <PartnerLogin />
+            </Suspense>
+          } />
+          <Route path="/partner-dashboard" element={
+            <Suspense fallback={<div>Loading...</div>}>
               <ProtectedRoute>
                 <PartnerDashboard />
               </ProtectedRoute>
-            } 
-          />
+            </Suspense>
+          } />
         </Routes>
       </MainContent>
       <AccoladeBanner />
