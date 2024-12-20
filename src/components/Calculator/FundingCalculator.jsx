@@ -470,7 +470,7 @@ const FundingCalculator = () => {
             </div>
             <small>*Final approval and terms subject to underwriting review</small>
             
-            <Form>
+            <Form onSubmit={handleFinalSubmit}>
               <InputGroup>
                 <Label>Email</Label>
                 <Input
