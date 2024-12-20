@@ -114,8 +114,8 @@ const ResetPassword = () => {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password?type=reset`,
-        emailRedirectTo: `${window.location.origin}/reset-password?type=reset`,
+        redirectTo: 'https://fullsendfunding.com/reset-password?type=reset',
+        emailRedirectTo: 'https://fullsendfunding.com/reset-password?type=reset',
         data: {
           company: 'Full Send Funding',
           sender_name: 'Full Send Funding Team'
@@ -144,7 +144,8 @@ const ResetPassword = () => {
 
       if (error) throw error;
       setMessage('Password has been successfully reset. Redirecting to login...');
-      setTimeout(() => navigate('/login'), 3000);
+      const redirectPath = searchParams.get('portal') === 'customer' ? '/customer-login' : '/partner-login';
+      setTimeout(() => navigate(redirectPath), 3000);
     } catch (error) {
       setError(error.message);
     } finally {
