@@ -251,6 +251,13 @@ const Header = () => {
     setIsAboutOpen(false);
   };
 
+  const handleLogoClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <>
       <TopBar>
@@ -265,7 +272,7 @@ const Header = () => {
       </TopBar>
       <HeaderContainer>
         <Nav>
-          <LogoLink to="/">
+          <LogoLink to="/" onClick={handleLogoClick}>
             <LogoImage src={Logo} alt="Full Send Funding" />
             <CompanyName>Full Send Funding</CompanyName>
           </LogoLink>
