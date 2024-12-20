@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaDollarSign, FaArrowRight, FaArrowLeft, FaCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { formatCurrency, parseCurrency } from '../../utils/formatters';
 
 const CalculatorContainer = styled.div`
   background: ${props => props.theme.colors.lightGray};
@@ -181,6 +183,7 @@ const NavigationButton = styled(motion.button)`
 `;
 
 const FundingCalculator = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     businessType: '',
@@ -244,6 +247,26 @@ const FundingCalculator = () => {
     nextStep();
   };
 
+  const handleMonthlyRevenueChange = (e) => {
+    const formatted = formatCurrency(e.target.value);
+    setFormData({
+      ...formData,
+      monthlyRevenue: formatted
+    });
+  };
+
+  const handleFinalSubmit = (e) => {
+    e.preventDefault();
+    // Store calculator data in localStorage
+    localStorage.setItem('applicationData', JSON.stringify({
+      ...formData,
+      monthlyRevenue: parseCurrency(formData.monthlyRevenue),
+      estimatedAmount: estimatedAmount
+    }));
+    // Navigate to full application
+    navigate('/apply');
+  };
+
   const renderStep = () => {
     switch(step) {
       case 1:
@@ -288,13 +311,7 @@ const FundingCalculator = () => {
                 name="monthlyRevenue"
                 placeholder="Enter average monthly revenue"
                 value={formData.monthlyRevenue}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '');
-                  setFormData({
-                    ...formData,
-                    monthlyRevenue: value
-                  });
-                }}
+                onChange={handleMonthlyRevenueChange}
                 required
               />
             </InputGroup>

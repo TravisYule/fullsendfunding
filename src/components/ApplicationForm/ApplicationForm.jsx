@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import { formatCurrency, parseCurrency } from '../../utils/formatters';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -173,18 +174,20 @@ const RequiredNote = styled.p`
 `;
 
 const ApplicationForm = () => {
-  const [formData, setFormData] = useState({
-    businessName: '',
-    ownerName: '',
-    dateOfBirth: '',
-    socialSecurityNumber: '',
-    email: '',
-    phone: '',
-    monthlyRevenue: '',
-    fundingAmount: '',
-    industry: '',
-    timeInBusiness: '',
-    ein: ''
+  const [formData, setFormData] = useState(() => {
+    // Try to get stored data
+    const storedData = localStorage.getItem('applicationData');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      // Clear stored data after retrieving
+      localStorage.removeItem('applicationData');
+      return {
+        ...initialFormState,
+        ...parsedData,
+        monthlyRevenue: formatCurrency(parsedData.monthlyRevenue)
+      };
+    }
+    return initialFormState;
   });
 
   const [files, setFiles] = useState([]);
@@ -213,6 +216,14 @@ const ApplicationForm = () => {
 
   const removeFile = (fileName) => {
     setFiles(prev => prev.filter(file => file.name !== fileName));
+  };
+
+  const handleMonthlyRevenueChange = (e) => {
+    const formatted = formatCurrency(e.target.value);
+    setFormData({
+      ...formData,
+      monthlyRevenue: formatted
+    });
   };
 
   return (
@@ -301,19 +312,14 @@ const ApplicationForm = () => {
 
           <FormGroup>
             <Label htmlFor="monthlyRevenue">Monthly Revenue</Label>
-            <Select
-              id="monthlyRevenue"
+            <Input
+              type="text"
               name="monthlyRevenue"
+              placeholder="Monthly Revenue"
               value={formData.monthlyRevenue}
-              onChange={handleChange}
+              onChange={handleMonthlyRevenueChange}
               required
-            >
-              <option value="">Select Monthly Revenue</option>
-              <option value="10000-25000">$10,000 - $25,000</option>
-              <option value="25000-50000">$25,000 - $50,000</option>
-              <option value="50000-100000">$50,000 - $100,000</option>
-              <option value="100000+">$100,000+</option>
-            </Select>
+            />
           </FormGroup>
 
           <FormGroup>

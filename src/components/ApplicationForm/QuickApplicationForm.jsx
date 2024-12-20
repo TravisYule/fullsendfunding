@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { formatCurrency, parseCurrency } from '../../utils/formatters';
+import { useNavigate } from 'react-router-dom';
 
 const Form = styled.form`
   display: flex;
@@ -76,6 +78,7 @@ const SubmitButton = styled(motion.button)`
 `;
 
 const QuickApplicationForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     businessName: '',
     ownerName: '',
@@ -93,11 +96,23 @@ const QuickApplicationForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleMonthlyRevenueChange = (e) => {
+    const formatted = formatCurrency(e.target.value);
+    setFormData({
+      ...formData,
+      monthlyRevenue: formatted
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
-    // TODO: Add API call to your backend
+    // Store form data in localStorage
+    localStorage.setItem('applicationData', JSON.stringify({
+      ...formData,
+      monthlyRevenue: parseCurrency(formData.monthlyRevenue)
+    }));
+    // Navigate to full application
+    navigate('/apply');
   };
 
   return (
@@ -154,19 +169,13 @@ const QuickApplicationForm = () => {
 
       <InputGroup>
         <Label htmlFor="monthlyRevenue">Monthly Revenue</Label>
-        <Select
-          id="monthlyRevenue"
-          name="monthlyRevenue"
+        <Input
+          type="text"
+          placeholder="Monthly Revenue"
           value={formData.monthlyRevenue}
-          onChange={handleChange}
+          onChange={handleMonthlyRevenueChange}
           required
-        >
-          <option value="">Select Monthly Revenue</option>
-          <option value="10000-25000">$10,000 - $25,000</option>
-          <option value="25000-50000">$25,000 - $50,000</option>
-          <option value="50000-100000">$50,000 - $100,000</option>
-          <option value="100000+">$100,000+</option>
-        </Select>
+        />
       </InputGroup>
 
       <InputGroup>
