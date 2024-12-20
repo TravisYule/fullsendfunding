@@ -19,6 +19,7 @@ import Footer from './components/Footer/Footer';
 import AccoladeBanner from './components/AccoladeBanner/AccoladeBanner';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Terms from './components/Terms/Terms';
+import FundingCalculator from './components/Calculator/FundingCalculator';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -40,6 +41,7 @@ function App() {
             <>
               <Hero />
               <QualificationSection />
+              <FundingCalculator />
               <IndustryCards />
               <ProcessTimeline />
               <ReasonSection />
@@ -54,6 +56,7 @@ function App() {
           <Route path="/apply" element={<ApplicationForm />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/calculator" element={<FundingCalculator />} />
         </Routes>
       </MainContent>
       <AccoladeBanner />
