@@ -163,20 +163,29 @@ const PartnerLogin = () => {
 
       if (error) throw error;
 
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', data.user.id)
         .single();
 
+      if (profileError) {
+        console.error('Profile error:', profileError);
+        throw profileError;
+      }
+
+      console.log('User role:', profile?.role);
+
       if (profile?.role === 'admin' || profile?.role === 'partner') {
         navigate('/partner-dashboard');
       } else {
+        console.log('Invalid role for partner portal:', profile?.role);
         setError('Invalid partner credentials');
         await supabase.auth.signOut();
       }
       
     } catch (error) {
+      console.error('Login error:', error);
       setError(error.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);

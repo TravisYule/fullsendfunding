@@ -16,22 +16,36 @@ const ProtectedRoute = ({ children }) => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
+        console.log('No session found');
         setHasAccess(false);
         setLoading(false);
         return;
       }
 
-      const { data: profile } = await supabase
+      console.log('Session found for user:', session.user.id);
+
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', session.user.id)
         .single();
 
+      if (profileError) {
+        console.error('Profile fetch error:', profileError);
+        throw profileError;
+      }
+
+      console.log('User role:', profile?.role);
+
       // Check access based on path and role
       if (location.pathname.includes('/partner-dashboard')) {
-        setHasAccess(profile?.role === 'admin' || profile?.role === 'partner');
+        const hasPartnerAccess = profile?.role === 'admin' || profile?.role === 'partner';
+        console.log('Partner access:', hasPartnerAccess);
+        setHasAccess(hasPartnerAccess);
       } else if (location.pathname.includes('/customer-dashboard')) {
-        setHasAccess(profile?.role === 'admin' || profile?.role === 'customer');
+        const hasCustomerAccess = profile?.role === 'admin' || profile?.role === 'customer';
+        console.log('Customer access:', hasCustomerAccess);
+        setHasAccess(hasCustomerAccess);
       } else {
         setHasAccess(false);
       }
