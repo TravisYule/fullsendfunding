@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaLock, FaUser } from 'react-icons/fa';
 import Logo from '../../assets/Logo.png';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../utils/supabaseClient';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -101,11 +103,21 @@ const LogoImage = styled.img`
   width: auto;
 `;
 
+const ErrorMessage = styled.div`
+  color: ${props => props.theme.colors.secondary};
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+`;
+
 const PartnerLogin = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -114,10 +126,38 @@ const PartnerLogin = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempt:', formData);
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) throw error;
+
+      // Check user role from Supabase user metadata
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single();
+
+      // Redirect based on role
+      if (profile?.role === 'admin') {
+        navigate('/partner-dashboard');
+      } else {
+        navigate('/partner-portal');
+      }
+      
+    } catch (error) {
+      setError(error.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -127,6 +167,7 @@ const PartnerLogin = () => {
           <LogoImage src={Logo} alt="Full Send Funding" />
         </LogoContainer>
         <Title>Partner Portal</Title>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Form onSubmit={handleSubmit}>
           <InputGroup>
             <Icon>
@@ -160,8 +201,9 @@ const PartnerLogin = () => {
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            disabled={isLoading}
           >
-            Log In
+            {isLoading ? 'Logging in...' : 'Log In'}
           </LoginButton>
         </Form>
         
