@@ -37,9 +37,14 @@ const CardGrid = styled.div`
 
 const Card = styled.div`
   padding: 2rem;
+  text-align: center;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     padding: 1.5rem;
+    margin: 0;
   }
 `;
 
@@ -47,6 +52,8 @@ const IconWrapper = styled.div`
   font-size: 2.5rem;
   color: ${props => props.theme.colors.secondary};
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
 `;
 
 const IndustryTitle = styled.h3`

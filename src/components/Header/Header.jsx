@@ -47,6 +47,10 @@ const HeaderContainer = styled.header`
   height: 90px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   top: 28px;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    height: 70px;
+  }
 `;
 
 const Nav = styled.nav`
@@ -64,11 +68,19 @@ const LogoLink = styled(Link)`
   align-items: center;
   gap: 1rem;
   text-decoration: none;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 0.5rem;
+  }
 `;
 
 const LogoImage = styled.img`
   height: 80px;
   width: auto;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    height: 60px;
+  }
 `;
 
 const CompanyName = styled.h1`
@@ -77,6 +89,10 @@ const CompanyName = styled.h1`
   font-weight: 600;
   margin: 0;
   white-space: nowrap;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.2rem;
+  }
 `;
 
 const NavLinks = styled.div`
