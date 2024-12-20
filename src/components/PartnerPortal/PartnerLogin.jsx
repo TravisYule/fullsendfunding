@@ -140,18 +140,16 @@ const PartnerLogin = () => {
 
       if (error) throw error;
 
-      // Check user role from Supabase user metadata
       const { data: profile } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', data.user.id)
         .single();
 
-      // Redirect based on role
       if (profile?.role === 'admin') {
         navigate('/partner-dashboard');
       } else {
-        navigate('/partner-portal');
+        navigate('/partner-dashboard');
       }
       
     } catch (error) {
