@@ -223,7 +223,7 @@ const CustomerLogin = () => {
           </Button>
         </Form>
         
-        <ForgotPassword href="#">
+        <ForgotPassword href="/reset-password?type=request">
           Forgot Password?
         </ForgotPassword>
       </LoginContainer>

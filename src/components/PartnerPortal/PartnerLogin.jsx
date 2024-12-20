@@ -239,7 +239,7 @@ const PartnerLogin = () => {
           </LoginButton>
         </Form>
         
-        <ForgotPassword href="#">
+        <ForgotPassword href="/reset-password?type=request">
           Forgot Password?
         </ForgotPassword>
       </LoginContainer>

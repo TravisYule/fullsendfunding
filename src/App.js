@@ -21,6 +21,7 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Terms from './components/Terms/Terms';
 import FundingCalculator from './components/Calculator/FundingCalculator';
 import ProtectedRoute from './components/ProtectedRoute';
+import ResetPassword from './components/Auth/ResetPassword';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -100,6 +101,12 @@ function App() {
               <ProtectedRoute>
                 <RenewalForm />
               </ProtectedRoute>
+            </Suspense>
+          } />
+
+          <Route path="/reset-password" element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ResetPassword />
             </Suspense>
           } />
         </Routes>
