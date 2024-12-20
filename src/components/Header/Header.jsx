@@ -45,6 +45,18 @@ const TopBarItem = styled.a`
   }
 `;
 
+const PortalLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  &:hover {
+    color: ${props => props.theme.colors.secondary};
+  }
+`;
+
 const HeaderContainer = styled.header`
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(5px);
@@ -273,6 +285,9 @@ const Header = () => {
           <TopBarItem href="mailto:travis@fullsendfunding.com">
             <FaEnvelope /> travis@fullsendfunding.com
           </TopBarItem>
+          <PortalLink to="/partner-login">
+            Partner Portal
+          </PortalLink>
         </TopBarContent>
       </TopBar>
       <HeaderContainer>

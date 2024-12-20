@@ -20,6 +20,7 @@ import AccoladeBanner from './components/AccoladeBanner/AccoladeBanner';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Terms from './components/Terms/Terms';
 import FundingCalculator from './components/Calculator/FundingCalculator';
+import PartnerLogin from './components/PartnerPortal/PartnerLogin';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -57,6 +58,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/calculator" element={<FundingCalculator />} />
+          <Route path="/partner-login" element={<PartnerLogin />} />
         </Routes>
       </MainContent>
       <AccoladeBanner />
