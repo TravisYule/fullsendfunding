@@ -135,45 +135,13 @@ const CustomerLogin = () => {
         password: formData.password,
       });
 
-      if (authError) {
-        console.log('Auth Error:', authError);
-        throw authError;
-      }
+      if (authError) throw authError;
 
-      console.log('Auth successful, user ID:', authData.user.id);
-
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .filter('id', 'eq', authData.user.id)
-        .limit(1)
-        .single();
-
-      if (profileError) {
-        if (profileError.code === 'PGRST116') {
-          const { error: insertError } = await supabase
-            .from('profiles')
-            .insert({
-              id: authData.user.id,
-              role: 'customer'
-            })
-            .single();
-
-          if (insertError) throw insertError;
-          
-          navigate('/customer-dashboard');
-          return;
-        }
-        throw profileError;
-      }
-
-      if (profile?.role === 'customer' || profile?.role === 'admin') {
-        navigate('/customer-dashboard');
-      } else {
-        setError('Invalid customer credentials');
-      }
+      // If authentication successful, proceed to dashboard
+      navigate('/customer-dashboard');
+      
     } catch (error) {
-      console.error('Full error:', error);
+      console.error('Login error:', error);
       setError(error.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
