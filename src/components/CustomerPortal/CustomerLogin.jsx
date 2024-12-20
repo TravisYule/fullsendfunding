@@ -130,25 +130,48 @@ const CustomerLogin = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (error) throw error;
+      if (authError) {
+        console.log('Auth Error:', authError);
+        throw authError;
+      }
 
-      const { data: profile } = await supabase
+      console.log('Auth successful, user ID:', authData.user.id);
+
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('role')
-        .eq('id', data.user.id)
-        .single();
+        .select('*')
+        .eq('id', authData.user.id)
+        .maybeSingle();
 
-      if (profile?.role === 'customer') {
+      if (profileError) {
+        console.log('Profile Error:', profileError);
+        throw profileError;
+      }
+
+      console.log('Full profile data:', profile);
+
+      if (!profile) {
+        console.log('No profile found, creating one...');
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert([{ id: authData.user.id, role: 'customer' }]);
+
+        if (insertError) throw insertError;
+        
+        navigate('/customer-dashboard');
+      } else if (profile.role === 'customer' || profile.role === 'admin') {
         navigate('/customer-dashboard');
       } else {
+        console.log('Invalid role:', profile.role);
         setError('Invalid customer credentials');
       }
     } catch (error) {
+      console.error('Full error:', error);
       setError(error.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
@@ -175,6 +198,7 @@ const CustomerLogin = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              autoComplete="email"
             />
           </InputGroup>
           <InputGroup>
@@ -186,6 +210,7 @@ const CustomerLogin = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              autoComplete="current-password"
             />
           </InputGroup>
           <Button type="submit" disabled={isLoading}>
