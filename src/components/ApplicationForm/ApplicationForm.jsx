@@ -173,6 +173,20 @@ const RequiredNote = styled.p`
   font-style: italic;
 `;
 
+const initialFormState = {
+  businessName: '',
+  ownerName: '',
+  dateOfBirth: '',
+  socialSecurityNumber: '',
+  email: '',
+  phone: '',
+  monthlyRevenue: '',
+  fundingAmount: '',
+  industry: '',
+  timeInBusiness: '',
+  ein: ''
+};
+
 const ApplicationForm = () => {
   const [formData, setFormData] = useState(() => {
     // Try to get stored data
@@ -184,7 +198,7 @@ const ApplicationForm = () => {
       return {
         ...initialFormState,
         ...parsedData,
-        monthlyRevenue: formatCurrency(parsedData.monthlyRevenue)
+        monthlyRevenue: formatCurrency(parsedData.monthlyRevenue || '0')
       };
     }
     return initialFormState;
