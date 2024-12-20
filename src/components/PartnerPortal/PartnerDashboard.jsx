@@ -28,24 +28,31 @@ const Title = styled.h1`
 `;
 
 const TabsContainer = styled.div`
-  display: flex;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: ${props => props.theme.colors.primary};
+  border-radius: 8px;
   margin-bottom: 2rem;
+  padding: 1rem;
 `;
 
 const Tab = styled.button`
-  padding: 0.75rem 1.5rem;
-  background: ${props => props.active ? props.theme.colors.primary : 'white'};
-  color: ${props => props.active ? 'white' : props.theme.colors.primary};
-  border: 2px solid ${props => props.theme.colors.primary};
-  border-radius: 4px;
+  padding: 1rem 1.5rem;
+  background: ${props => props.active ? 'white' : 'transparent'};
+  color: ${props => props.active ? props.theme.colors.primary : 'white'};
+  border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   font-weight: 600;
+  font-size: 1.1rem;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: ${props => props.active ? 'white' : 'rgba(255, 255, 255, 0.1)'};
+  }
+
+  &:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
   }
 `;
 
