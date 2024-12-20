@@ -47,21 +47,6 @@ const TopBarItem = styled.a`
   }
 `;
 
-const TopBarApplyButton = styled(Link)`
-  background: ${props => props.theme.colors.secondary};
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: background 0.3s ease;
-  
-  &:hover {
-    background: ${props => props.theme.colors.accent};
-  }
-`;
-
 const HeaderContainer = styled.header`
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(5px);
@@ -174,6 +159,11 @@ const ApplyButton = styled(Link)`
   &:hover {
     background: ${props => props.theme.colors.accent};
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: block;
+    margin: 0.5rem 0;
+  }
 `;
 
 const NavItem = styled.div`
@@ -266,25 +256,6 @@ const MobileApplyButton = styled(Link)`
   }
 `;
 
-const HeaderApplyButton = styled(Link)`
-  background: ${props => props.theme.colors.secondary};
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
-  
-  &:hover {
-    background: ${props => props.theme.colors.accent};
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    display: none;
-  }
-`;
-
 const Header = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
@@ -296,7 +267,6 @@ const Header = () => {
     <>
       <TopBar>
         <TopBarContent>
-          <TopBarApplyButton to="/apply">Apply Now</TopBarApplyButton>
           <TopBarRight>
             <TopBarItem href="tel:518-312-0382">
               <FaPhone /> Call Us Today at 518-312-0382
@@ -309,13 +279,10 @@ const Header = () => {
       </TopBar>
       <HeaderContainer>
         <Nav>
-          <LogoSection>
-            <LogoLink to="/">
-              <LogoImage src={Logo} alt="Full Send Funding" />
-              <CompanyName>Full Send Funding</CompanyName>
-            </LogoLink>
-            <HeaderApplyButton to="/apply">Apply Now</HeaderApplyButton>
-          </LogoSection>
+          <LogoLink to="/">
+            <LogoImage src={Logo} alt="Full Send Funding" />
+            <CompanyName>Full Send Funding</CompanyName>
+          </LogoLink>
           <NavLinks isOpen={isAboutOpen}>
             <NavItem 
               onMouseEnter={() => setIsAboutOpen(true)}
