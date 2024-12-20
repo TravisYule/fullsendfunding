@@ -144,7 +144,7 @@ const CustomerLogin = () => {
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, role')
         .eq('id', authData.user.id)
         .maybeSingle();
 
@@ -159,7 +159,12 @@ const CustomerLogin = () => {
         console.log('No profile found, creating one...');
         const { error: insertError } = await supabase
           .from('profiles')
-          .insert([{ id: authData.user.id, role: 'customer' }]);
+          .insert([{ 
+            id: authData.user.id, 
+            role: 'customer',
+            created_at: new Date().toISOString()
+          }])
+          .single();
 
         if (insertError) throw insertError;
         
