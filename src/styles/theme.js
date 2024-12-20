@@ -12,7 +12,7 @@ export const theme = {
     secondary: "'Open Sans', sans-serif"
   },
   breakpoints: {
-    mobile: '320px',
+    mobile: '480px',
     tablet: '768px',
     desktop: '1024px'
   }
