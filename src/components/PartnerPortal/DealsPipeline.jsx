@@ -3,42 +3,39 @@ import styled from 'styled-components';
 import { supabase } from '../../utils/supabaseClient';
 
 const PipelineContainer = styled.div`
-  margin-top: 2rem;
-`;
-
-const PipelineHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-`;
-
-const PipelineTitle = styled.h2`
-  color: ${props => props.theme.colors.primary};
-`;
-
-const PipelineGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 1rem;
-`;
-
-const StageColumn = styled.div`
-  background: #f8f9fa;
-  padding: 1rem;
+  background: white;
+  padding: 2rem;
   border-radius: 8px;
-  min-width: 250px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+`;
+
+const StagesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+`;
+
+const Stage = styled.div`
+  background: ${props => props.theme.colors.lightGray};
+  padding: 1rem;
+  border-radius: 6px;
+  min-height: 200px;
 `;
 
 const StageHeader = styled.div`
-  font-weight: bold;
-  color: ${props => props.theme.colors.primary};
-  margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid ${props => props.theme.colors.primary};
+`;
+
+const StageTitle = styled.h3`
+  color: ${props => props.theme.colors.primary};
+  margin: 0;
 `;
 
 const DealCount = styled.span`
@@ -52,10 +49,10 @@ const DealCount = styled.span`
 const DealCard = styled.div`
   background: white;
   padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  
+
   &:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
@@ -66,69 +63,52 @@ const BusinessName = styled.div`
   color: ${props => props.theme.colors.primary};
 `;
 
-const Amount = styled.div`
+const DealAmount = styled.div`
   color: ${props => props.theme.colors.secondary};
   font-weight: bold;
+  margin: 0.5rem 0;
 `;
 
-const ClientName = styled.div`
+const DealInfo = styled.div`
   font-size: 0.9rem;
   color: #666;
 `;
 
-const DateInfo = styled.div`
-  font-size: 0.8rem;
-  color: #999;
-  margin-top: 0.5rem;
-`;
+const stages = [
+  'Intake',
+  'Underwriting',
+  'Declined',
+  'Resubmit',
+  'Approved',
+  'Contracts Out',
+  'Funded'
+];
 
 const DealsPipeline = () => {
   const [deals, setDeals] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const stages = [
-    'Intake',
-    'Underwriting',
-    'Declined',
-    'Resubmit',
-    'Approved',
-    'Contracts Out',
-    'Funded'
-  ];
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkRole();
     fetchDeals();
   }, []);
 
-  const checkRole = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-      
-      setIsAdmin(profile?.role === 'admin');
-    }
-  };
-
   const fetchDeals = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { data, error } = await supabase
+        .from('deals')
+        .select('*')
+        .eq('partner_id', user.id)
+        .order('created_at', { ascending: false });
 
-    const { data, error } = await supabase
-      .from('deals')
-      .select('*')
-      .order('submitted_at', { ascending: false });
-
-    if (error) {
+      if (error) throw error;
+      setDeals(data || []);
+    } catch (error) {
       console.error('Error fetching deals:', error);
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    setDeals(data || []);
   };
 
   const getDealsByStage = (stage) => {
@@ -142,34 +122,32 @@ const DealsPipeline = () => {
     }).format(amount);
   };
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString();
-  };
+  if (loading) {
+    return <div>Loading deals...</div>;
+  }
 
   return (
     <PipelineContainer>
-      <PipelineHeader>
-        <PipelineTitle>Deals Pipeline</PipelineTitle>
-      </PipelineHeader>
-      
-      <PipelineGrid>
+      <StagesGrid>
         {stages.map(stage => (
-          <StageColumn key={stage}>
+          <Stage key={stage}>
             <StageHeader>
-              {stage}
+              <StageTitle>{stage}</StageTitle>
               <DealCount>{getDealsByStage(stage).length}</DealCount>
             </StageHeader>
             {getDealsByStage(stage).map(deal => (
               <DealCard key={deal.id}>
                 <BusinessName>{deal.business_name}</BusinessName>
-                <Amount>{formatCurrency(deal.amount)}</Amount>
-                <ClientName>{deal.client_name}</ClientName>
-                <DateInfo>Submitted: {formatDate(deal.submitted_at)}</DateInfo>
+                <DealAmount>{formatCurrency(deal.amount)}</DealAmount>
+                <DealInfo>
+                  <div>Client: {deal.client_name}</div>
+                  <div>Submitted: {new Date(deal.created_at).toLocaleDateString()}</div>
+                </DealInfo>
               </DealCard>
             ))}
-          </StageColumn>
+          </Stage>
         ))}
-      </PipelineGrid>
+      </StagesGrid>
     </PipelineContainer>
   );
 };

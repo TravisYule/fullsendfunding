@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { supabase } from '../../utils/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import DealsPipeline from './DealsPipeline';
+import FundedDeals from './FundedDeals';
+import SubmitDeal from './SubmitDeal';
 
 const DashboardContainer = styled.div`
   padding: 2rem;
@@ -21,18 +23,37 @@ const Header = styled.div`
 
 const Title = styled.h1`
   color: ${props => props.theme.colors.primary};
+  font-size: 2rem;
+  margin: 0;
 `;
 
-const Controls = styled.div`
+const TabsContainer = styled.div`
   display: flex;
   gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background: ${props => props.variant === 'secondary' ? 'white' : props.theme.colors.secondary};
-  color: ${props => props.variant === 'secondary' ? props.theme.colors.primary : 'white'};
-  border: ${props => props.variant === 'secondary' ? `1px solid ${props.theme.colors.primary}` : 'none'};
+const Tab = styled.button`
+  padding: 0.75rem 1.5rem;
+  background: ${props => props.active ? props.theme.colors.primary : 'white'};
+  color: ${props => props.active ? 'white' : props.theme.colors.primary};
+  border: 2px solid ${props => props.theme.colors.primary};
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+`;
+
+const LogoutButton = styled.button`
+  padding: 0.75rem 1.5rem;
+  background: ${props => props.theme.colors.secondary};
+  color: white;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -43,43 +64,13 @@ const Button = styled.button`
   }
 `;
 
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-`;
-
-const StatCard = styled.div`
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-`;
-
-const StatTitle = styled.h3`
-  color: ${props => props.theme.colors.primary};
-  margin-bottom: 0.5rem;
-`;
-
-const StatValue = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: ${props => props.theme.colors.secondary};
-`;
-
 const PartnerDashboard = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('pipeline');
   const [userProfile, setUserProfile] = useState(null);
-  const [stats, setStats] = useState({
-    totalApplications: 0,
-    pendingApplications: 0,
-    approvedApplications: 0
-  });
 
   useEffect(() => {
     getProfile();
-    getStats();
   }, []);
 
   const getProfile = async () => {
@@ -99,16 +90,6 @@ const PartnerDashboard = () => {
     }
   };
 
-  const getStats = async () => {
-    // TODO: Implement stats fetching from your applications table
-    // This is a placeholder for now
-    setStats({
-      totalApplications: 25,
-      pendingApplications: 8,
-      approvedApplications: 12
-    });
-  };
-
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -119,36 +100,48 @@ const PartnerDashboard = () => {
     }
   };
 
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'pipeline':
+        return <DealsPipeline />;
+      case 'funded':
+        return <FundedDeals />;
+      case 'submit':
+        return <SubmitDeal />;
+      default:
+        return <DealsPipeline />;
+    }
+  };
+
   return (
     <DashboardContainer>
       <Header>
         <Title>Partner Dashboard</Title>
-        <Controls>
-          <Button variant="secondary" onClick={() => navigate('/applications')}>
-            View Applications
-          </Button>
-          <Button onClick={handleLogout}>Log Out</Button>
-        </Controls>
+        <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
       </Header>
 
-      <StatsGrid>
-        <StatCard>
-          <StatTitle>Total Applications</StatTitle>
-          <StatValue>{stats.totalApplications}</StatValue>
-        </StatCard>
-        <StatCard>
-          <StatTitle>Pending Review</StatTitle>
-          <StatValue>{stats.pendingApplications}</StatValue>
-        </StatCard>
-        <StatCard>
-          <StatTitle>Approved</StatTitle>
-          <StatValue>{stats.approvedApplications}</StatValue>
-        </StatCard>
-      </StatsGrid>
+      <TabsContainer>
+        <Tab 
+          active={activeTab === 'pipeline'} 
+          onClick={() => setActiveTab('pipeline')}
+        >
+          Deal Pipeline
+        </Tab>
+        <Tab 
+          active={activeTab === 'funded'} 
+          onClick={() => setActiveTab('funded')}
+        >
+          Funded Deals
+        </Tab>
+        <Tab 
+          active={activeTab === 'submit'} 
+          onClick={() => setActiveTab('submit')}
+        >
+          Submit Deal
+        </Tab>
+      </TabsContainer>
 
-      <DealsPipeline />
-
-      {/* Add more dashboard sections here */}
+      {renderContent()}
     </DashboardContainer>
   );
 };
