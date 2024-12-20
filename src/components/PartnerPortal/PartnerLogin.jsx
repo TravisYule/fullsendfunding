@@ -146,10 +146,11 @@ const PartnerLogin = () => {
         .eq('id', data.user.id)
         .single();
 
-      if (profile?.role === 'admin') {
+      if (profile?.role === 'admin' || profile?.role === 'partner') {
         navigate('/partner-dashboard');
       } else {
-        navigate('/partner-dashboard');
+        setError('Invalid partner credentials');
+        await supabase.auth.signOut();
       }
       
     } catch (error) {

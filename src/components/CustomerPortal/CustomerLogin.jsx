@@ -130,18 +130,29 @@ const CustomerLogin = () => {
     setIsLoading(true);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
 
-      if (authError) throw authError;
+      if (error) throw error;
 
-      // If authentication successful, proceed to dashboard
-      navigate('/customer-dashboard');
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single();
+
+      // Only allow customers and admins
+      if (profile?.role === 'admin' || profile?.role === 'customer') {
+        navigate('/customer-dashboard');
+      } else {
+        setError('Invalid customer credentials');
+        // Sign out if not a customer or admin
+        await supabase.auth.signOut();
+      }
       
     } catch (error) {
-      console.error('Login error:', error);
       setError(error.message || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
