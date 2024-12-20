@@ -18,10 +18,12 @@ const BannerContent = styled.div`
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 

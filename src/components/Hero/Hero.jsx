@@ -8,8 +8,13 @@ const HeroContainer = styled.div`
   min-height: 80vh;
   display: flex;
   align-items: center;
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   color: white;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
 `;
 
 const Content = styled.div`
@@ -44,6 +49,14 @@ const QuickForm = styled(motion.div)`
   color: ${props => props.theme.colors.text};
 `;
 
+const HeroTitle = styled.h1`
+  font-size: 3.5rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 2.5rem;
+  }
+`;
+
 const Hero = () => {
   return (
     <HeroContainer>
@@ -53,7 +66,7 @@ const Hero = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1>Business Funding Made Simple</h1>
+          <HeroTitle>Business Funding Made Simple</HeroTitle>
           <p>Get funded up to $500,000 within 24 hours. No collateral required.</p>
           <ul>
             <li>Simple Application Process</li>

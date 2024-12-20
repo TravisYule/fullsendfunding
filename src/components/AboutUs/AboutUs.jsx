@@ -78,6 +78,23 @@ const LocationContent = styled.div`
   border-radius: 8px;
 `;
 
+const ContentGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+`;
+
+const ImageContainer = styled.div`
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    margin: 0 -1rem;
+  }
+`;
+
 const AboutUs = () => {
   return (
     <Section>

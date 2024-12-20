@@ -23,6 +23,7 @@ const FooterContent = styled.div`
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     grid-template-columns: 1fr;
+    text-align: center;
   }
 `;
 

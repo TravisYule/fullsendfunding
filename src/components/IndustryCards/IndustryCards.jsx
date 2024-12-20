@@ -20,19 +20,27 @@ const SectionTitle = styled.h2`
   margin-bottom: 3rem;
 `;
 
-const Grid = styled.div`
+const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `;
 
-const Card = styled(motion.div)`
-  background: white;
+const Card = styled.div`
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-align: center;
-  cursor: pointer;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1.5rem;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -96,7 +104,7 @@ const IndustryCards = () => {
     <Section>
       <Container>
         <SectionTitle>Industries We Serve</SectionTitle>
-        <Grid>
+        <CardGrid>
           {industries.map((industry, index) => (
             <Card
               key={index}
@@ -112,7 +120,7 @@ const IndustryCards = () => {
               <Description>{industry.description}</Description>
             </Card>
           ))}
-        </Grid>
+        </CardGrid>
       </Container>
     </Section>
   );

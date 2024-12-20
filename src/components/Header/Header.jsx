@@ -85,7 +85,20 @@ const NavLinks = styled.div`
   align-items: center;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: none;
+    display: ${props => props.isOpen ? 'flex' : 'none'};
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
+    a {
+      padding: 0.5rem 0;
+      text-align: center;
+    }
   }
 `;
 
@@ -161,6 +174,31 @@ const DropdownItem = styled(Link)`
   }
 `;
 
+const MobileMenu = styled.div`
+  display: none;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: block;
+  }
+`;
+
+const HamburgerButton = styled.button`
+  display: none;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: block;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 100;
+    background: none;
+    border: none;
+    color: ${props => props.theme.colors.primary};
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+`;
+
 const Header = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 
@@ -186,7 +224,7 @@ const Header = () => {
             <LogoImage src={Logo} alt="Full Send Funding" />
             <CompanyName>Full Send Funding</CompanyName>
           </LogoLink>
-          <NavLinks>
+          <NavLinks isOpen={isAboutOpen}>
             <NavItem 
               onMouseEnter={() => setIsAboutOpen(true)}
               onMouseLeave={() => setIsAboutOpen(false)}

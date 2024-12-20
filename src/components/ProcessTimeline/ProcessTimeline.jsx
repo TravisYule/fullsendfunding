@@ -130,6 +130,22 @@ const steps = [
   }
 ];
 
+const TimelineContainer = styled.div`
+  display: flex;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-direction: column;
+  }
+`;
+
+const TimelineStep = styled.div`
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 3px solid ${props => props.theme.colors.primary};
+  }
+`;
+
 const ProcessTimeline = () => {
   return (
     <Section>

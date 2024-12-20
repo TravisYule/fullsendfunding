@@ -37,10 +37,18 @@ const Form = styled.form`
   padding: 3rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1.5rem;
+  }
 `;
 
 const FormGroup = styled.div`
   margin-bottom: 1.5rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const Label = styled.label`
@@ -60,6 +68,10 @@ const Input = styled.input`
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.accent};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 16px; // Prevents iOS zoom on focus
   }
 `;
 

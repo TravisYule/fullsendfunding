@@ -35,6 +35,11 @@ const Input = styled.input`
     outline: none;
     border-color: ${props => props.theme.colors.accent};
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 16px;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const Select = styled.select`
@@ -47,6 +52,10 @@ const Select = styled.select`
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.accent};
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 16px;
   }
 `;
 

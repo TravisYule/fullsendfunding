@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -24,6 +25,20 @@ const GlobalStyles = createGlobalStyle`
 
   ul {
     list-style: none;
+  }
+`;
+
+export const Section = styled.section`
+  padding: 5rem 2rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 3rem 1rem;
+  }
+`;
+
+export const Container = styled.div`
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0 1rem;
   }
 `;
 

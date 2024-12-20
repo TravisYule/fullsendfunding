@@ -37,9 +37,12 @@ const FAQItem = styled.div`
   border-radius: 8px;
   overflow: hidden;
   background: ${props => props.theme.colors.lightGray};
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1rem;
+  }
 `;
 
-const Question = styled.button`
+const Question = styled.div`
   width: 100%;
   text-align: left;
   padding: 1.5rem;
@@ -53,6 +56,10 @@ const Question = styled.button`
   font-size: 1.1rem;
   font-weight: 600;
   transition: all 0.3s ease;
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    padding-right: 2rem;
+  }
 
   &:hover {
     background: rgba(0, 0, 0, 0.05);
