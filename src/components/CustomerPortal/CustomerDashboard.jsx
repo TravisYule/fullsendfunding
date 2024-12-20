@@ -58,9 +58,37 @@ const ContentSection = styled.div`
   margin-bottom: 2rem;
 `;
 
+const AccountSection = styled(ContentSection)`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+`;
+
+const AccountCard = styled.div`
+  padding: 1.5rem;
+  background: ${props => props.theme.colors.lightGray};
+  border-radius: 6px;
+  
+  h3 {
+    color: ${props => props.theme.colors.primary};
+    margin-bottom: 1rem;
+  }
+  
+  .amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: ${props => props.theme.colors.secondary};
+  }
+`;
+
 const CustomerDashboard = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState(null);
+  const [accountInfo, setAccountInfo] = useState({
+    currentBalance: 0,
+    totalFunded: 0,
+    nextPayment: null
+  });
 
   useEffect(() => {
     getProfile();
@@ -98,8 +126,8 @@ const CustomerDashboard = () => {
       <Header>
         <Title>Customer Dashboard</Title>
         <Controls>
-          <Button variant="secondary" onClick={() => navigate('/apply')}>
-            New Application
+          <Button variant="secondary" onClick={() => navigate('/renewal')}>
+            Submit for Renewal
           </Button>
           <Button onClick={handleLogout}>Log Out</Button>
         </Controls>
@@ -107,10 +135,39 @@ const CustomerDashboard = () => {
 
       <ContentSection>
         <h2>Welcome{userProfile ? `, ${userProfile.email}` : ''}!</h2>
-        <p>View and manage your funding applications here.</p>
+        <p>Monitor your funding and submit renewal requests here.</p>
       </ContentSection>
 
-      {/* Add more dashboard content here */}
+      <AccountSection>
+        <AccountCard>
+          <h3>Current Balance</h3>
+          <div className="amount">
+            {new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD'
+            }).format(accountInfo.currentBalance)}
+          </div>
+        </AccountCard>
+
+        <AccountCard>
+          <h3>Total Funded</h3>
+          <div className="amount">
+            {new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD'
+            }).format(accountInfo.totalFunded)}
+          </div>
+        </AccountCard>
+
+        <AccountCard>
+          <h3>Next Payment</h3>
+          <div className="amount">
+            {accountInfo.nextPayment 
+              ? new Date(accountInfo.nextPayment).toLocaleDateString()
+              : 'N/A'}
+          </div>
+        </AccountCard>
+      </AccountSection>
     </DashboardContainer>
   );
 };
