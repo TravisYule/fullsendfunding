@@ -255,11 +255,26 @@ const FundingCalculator = () => {
                 required
               >
                 <option value="">Select business type</option>
-                <option value="retail">Retail</option>
-                <option value="restaurant">Restaurant</option>
-                <option value="service">Service Business</option>
-                <option value="construction">Construction</option>
-                <option value="other">Other</option>
+                <option value="retail">Retail Store</option>
+                <option value="restaurant">Restaurant/Bar</option>
+                <option value="automotive">Automotive</option>
+                <option value="construction">Construction/Contractor</option>
+                <option value="healthcare">Healthcare/Medical</option>
+                <option value="manufacturing">Manufacturing</option>
+                <option value="transportation">Transportation/Logistics</option>
+                <option value="wholesale">Wholesale/Distribution</option>
+                <option value="professional">Professional Services</option>
+                <option value="salon">Beauty Salon/Spa</option>
+                <option value="fitness">Fitness/Gym</option>
+                <option value="hotel">Hotel/Hospitality</option>
+                <option value="ecommerce">E-commerce</option>
+                <option value="technology">Technology/IT</option>
+                <option value="cleaning">Cleaning Services</option>
+                <option value="landscaping">Landscaping</option>
+                <option value="agriculture">Agriculture/Farming</option>
+                <option value="entertainment">Entertainment/Events</option>
+                <option value="education">Education/Training</option>
+                <option value="other">Other Business Type</option>
               </Select>
             </InputGroup>
 

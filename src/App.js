@@ -41,8 +41,8 @@ function App() {
             <>
               <Hero />
               <QualificationSection />
-              <FundingCalculator />
               <IndustryCards />
+              <FundingCalculator />
               <ProcessTimeline />
               <ReasonSection />
             </>
