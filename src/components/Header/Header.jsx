@@ -310,7 +310,7 @@ const Header = () => {
           </TopBarLeft>
           <PortalButtons>
             <PortalButton to="/customer-login">Customer Portal</PortalButton>
-            <PortalButton to="/partner-login">Partner Portal</PortalButton>
+            <PortalLink to="/partner-dashboard">Partner Portal</PortalLink>
           </PortalButtons>
         </TopBarContent>
       </TopBar>
