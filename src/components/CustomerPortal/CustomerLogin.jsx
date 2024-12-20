@@ -44,6 +44,7 @@ const Form = styled.form`
 
 const InputGroup = styled.div`
   position: relative;
+  width: 100%;
 `;
 
 const Input = styled.input`
@@ -53,6 +54,7 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
