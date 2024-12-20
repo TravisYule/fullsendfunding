@@ -1,115 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import { FaLock, FaUser } from 'react-icons/fa';
-import Logo from '../../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../utils/supabaseClient';
-
-const Section = styled.section`
-  padding: 5rem 2rem;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props => props.theme.colors.lightGray};
-`;
-
-const LoginContainer = styled.div`
-  max-width: 400px;
-  width: 100%;
-  padding: 2.5rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-`;
-
-const Title = styled.h1`
-  color: ${props => props.theme.colors.primary};
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const InputGroup = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.75rem;
-  padding-left: 2.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.secondary};
-  }
-`;
-
-const Icon = styled.div`
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${props => props.theme.colors.primary};
-`;
-
-const LoginButton = styled(motion.button)`
-  width: 100%;
-  padding: 1rem;
-  background: ${props => props.theme.colors.secondary};
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  
-  &:hover {
-    background: #ff3333;
-  }
-`;
-
-const ForgotPassword = styled.a`
-  text-align: center;
-  color: ${props => props.theme.colors.primary};
-  text-decoration: none;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  display: block;
-  
-  &:hover {
-    color: ${props => props.theme.colors.secondary};
-  }
-`;
-
-const LogoContainer = styled.div`
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const LogoImage = styled.img`
-  height: 100px;
-  width: auto;
-`;
-
-const ErrorMessage = styled.div`
-  color: ${props => props.theme.colors.secondary};
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-`;
+import Logo from '../../assets/Logo.png';
+import {
+  Section,
+  LoginContainer,
+  LogoContainer,
+  LogoImage,
+  Title,
+  Form,
+  InputGroup,
+  Input,
+  Icon,
+  Button,
+  ErrorMessage,
+  ForgotPassword
+} from '../Shared/PortalStyles';
 
 const PartnerLogin = () => {
   const navigate = useNavigate();
@@ -229,14 +136,14 @@ const PartnerLogin = () => {
             />
           </InputGroup>
 
-          <LoginButton
+          <Button
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             disabled={isLoading}
           >
             {isLoading ? 'Logging in...' : 'Log In'}
-          </LoginButton>
+          </Button>
         </Form>
         
         <ForgotPassword href="/reset-password?type=request">
