@@ -4,6 +4,23 @@ import { Link } from 'react-router-dom';
 import Logo from '../../assets/Logo.png';
 import { FaPhone, FaEnvelope } from 'react-icons/fa';
 
+const PortalButton = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+  padding: 0.25rem 0.5rem;
+  display: inline-block;
+
+  &:hover {
+    color: ${props => props.theme.colors.secondary};
+  }
+`;
+
+const PortalLink = styled(PortalButton)`
+  // Inherits all styles from PortalButton
+`;
+
 const TopBar = styled.div`
   background: ${props => props.theme.colors.primary};
   color: white;
@@ -48,10 +65,6 @@ const TopBarItem = styled.a`
   &:hover {
     color: ${props => props.theme.colors.secondary};
   }
-`;
-
-const PortalLink = styled(PortalButton)`
-  // Inherits all styles from PortalButton
 `;
 
 const HeaderContainer = styled.header`
@@ -261,19 +274,6 @@ const PortalButtons = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
-`;
-
-const PortalButton = styled(Link)`
-  color: white;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-  padding: 0.25rem 0.5rem;
-  display: inline-block;
-
-  &:hover {
-    color: ${props => props.theme.colors.secondary};
-  }
 `;
 
 const Header = () => {
