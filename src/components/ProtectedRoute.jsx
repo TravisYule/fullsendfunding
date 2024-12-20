@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { supabase } from '../utils/supabaseClient';
+import LoadingScreen from './shared/LoadingScreen';
 
 const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -8,6 +9,7 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
+    setLoading(true);
     checkAccess();
   }, [location.pathname]);
 
@@ -17,7 +19,6 @@ const ProtectedRoute = ({ children }) => {
       
       if (!session) {
         setHasAccess(false);
-        setLoading(false);
         return;
       }
 
@@ -29,37 +30,34 @@ const ProtectedRoute = ({ children }) => {
 
       // Check access based on path and role
       if (location.pathname.includes('/partner')) {
-        // For partner portal paths
         if (profile?.role === 'admin' || profile?.role === 'partner') {
           setHasAccess(true);
         } else {
-          // Only sign out if explicitly trying to access partner routes as non-partner
           await supabase.auth.signOut();
           setHasAccess(false);
         }
       } else if (location.pathname.includes('/customer')) {
-        // For customer portal paths
         if (profile?.role === 'admin' || profile?.role === 'customer') {
           setHasAccess(true);
         } else {
-          // Only sign out if explicitly trying to access customer routes as non-customer
           await supabase.auth.signOut();
           setHasAccess(false);
         }
       } else {
-        // For any other protected routes, require authentication
         setHasAccess(!!session);
       }
     } catch (error) {
       console.error('Access check error:', error);
       setHasAccess(false);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   if (!hasAccess) {
