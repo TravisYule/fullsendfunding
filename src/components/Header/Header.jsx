@@ -50,16 +50,8 @@ const TopBarItem = styled.a`
   }
 `;
 
-const PortalLink = styled(Link)`
-  color: white;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  
-  &:hover {
-    color: ${props => props.theme.colors.secondary};
-  }
+const PortalLink = styled(PortalButton)`
+  // Inherits all styles from PortalButton
 `;
 
 const HeaderContainer = styled.header`
@@ -267,16 +259,16 @@ const MobileApplyButton = styled(Link)`
 
 const PortalButtons = styled.div`
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: center;
 `;
 
 const PortalButton = styled(Link)`
   color: white;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: color 0.3s ease;
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 0.5rem;
   display: inline-block;
 
   &:hover {
