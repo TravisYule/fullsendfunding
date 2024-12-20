@@ -39,20 +39,21 @@ const Form = styled.form`
 
 const InputGroup = styled.div`
   position: relative;
+  width: 100%;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 1rem 1rem 1rem 3rem;
-  border: 2px solid #eee;
-  border-radius: 8px;
+  padding: 0.75rem;
+  padding-left: 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
   font-size: 1rem;
-  transition: all 0.3s ease;
-  
+  box-sizing: border-box;
+
   &:focus {
-    border-color: ${props => props.theme.colors.secondary};
     outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
+    border-color: ${props => props.theme.colors.secondary};
   }
 `;
 

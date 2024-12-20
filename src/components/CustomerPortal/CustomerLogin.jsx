@@ -26,7 +26,7 @@ const LoginContainer = styled(motion.div)`
 `;
 
 const LogoImage = styled.img`
-  height: 60px;
+  height: 80px;
   margin-bottom: 1rem;
 `;
 
