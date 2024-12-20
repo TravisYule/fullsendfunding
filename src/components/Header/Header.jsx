@@ -21,12 +21,16 @@ const TopBar = styled.div`
 `;
 
 const TopBarContent = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
   padding: 0 1rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 1.5rem;
+  }
 `;
 
 const TopBarItem = styled.a`
