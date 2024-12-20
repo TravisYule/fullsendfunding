@@ -101,12 +101,16 @@ const PartnerDashboard = () => {
   };
 
   const renderContent = () => {
+    console.log('Active Tab:', activeTab);
     switch (activeTab) {
       case 'pipeline':
+        console.log('Rendering Pipeline');
         return <DealsPipeline />;
       case 'funded':
+        console.log('Rendering Funded Deals');
         return <FundedDeals />;
       case 'submit':
+        console.log('Rendering Submit Deal');
         return <SubmitDeal />;
       default:
         return <DealsPipeline />;
@@ -120,22 +124,31 @@ const PartnerDashboard = () => {
         <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
       </Header>
 
-      <TabsContainer>
+      <TabsContainer style={{ border: '1px solid red' }}>
         <Tab 
           active={activeTab === 'pipeline'} 
-          onClick={() => setActiveTab('pipeline')}
+          onClick={() => {
+            console.log('Clicking Pipeline Tab');
+            setActiveTab('pipeline');
+          }}
         >
           Deal Pipeline
         </Tab>
         <Tab 
           active={activeTab === 'funded'} 
-          onClick={() => setActiveTab('funded')}
+          onClick={() => {
+            console.log('Clicking Funded Tab');
+            setActiveTab('funded');
+          }}
         >
           Funded Deals
         </Tab>
         <Tab 
           active={activeTab === 'submit'} 
-          onClick={() => setActiveTab('submit')}
+          onClick={() => {
+            console.log('Clicking Submit Tab');
+            setActiveTab('submit');
+          }}
         >
           Submit Deal
         </Tab>
