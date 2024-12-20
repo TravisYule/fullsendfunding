@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaLock, FaUser } from 'react-icons/fa';
+import Logo from '../../assets/Logo.png';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -90,6 +91,16 @@ const ForgotPassword = styled.a`
   }
 `;
 
+const LogoContainer = styled.div`
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const LogoImage = styled.img`
+  height: 100px;
+  width: auto;
+`;
+
 const PartnerLogin = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -112,6 +123,9 @@ const PartnerLogin = () => {
   return (
     <Section>
       <LoginContainer>
+        <LogoContainer>
+          <LogoImage src={Logo} alt="Full Send Funding" />
+        </LogoContainer>
         <Title>Partner Portal</Title>
         <Form onSubmit={handleSubmit}>
           <InputGroup>

@@ -22,7 +22,7 @@ const TopBar = styled.div`
 
 const TopBarContent = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -31,6 +31,11 @@ const TopBarContent = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     gap: 1.5rem;
   }
+`;
+
+const TopBarLeft = styled.div`
+  display: flex;
+  gap: 3rem;
 `;
 
 const TopBarItem = styled.a`
@@ -279,12 +284,14 @@ const Header = () => {
     <>
       <TopBar>
         <TopBarContent>
-          <TopBarItem href="tel:518-312-0382">
-            <FaPhone /> Call Us Today at 518-312-0382
-          </TopBarItem>
-          <TopBarItem href="mailto:travis@fullsendfunding.com">
-            <FaEnvelope /> travis@fullsendfunding.com
-          </TopBarItem>
+          <TopBarLeft>
+            <TopBarItem href="tel:518-312-0382">
+              <FaPhone /> Call Us Today at 518-312-0382
+            </TopBarItem>
+            <TopBarItem href="mailto:travis@fullsendfunding.com">
+              <FaEnvelope /> travis@fullsendfunding.com
+            </TopBarItem>
+          </TopBarLeft>
           <PortalLink to="/partner-login">
             Partner Portal
           </PortalLink>
