@@ -53,7 +53,7 @@ const HeaderContainer = styled.header`
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     height: 70px;
-    top: 0;
+    top: 45px;
   }
 `;
 
@@ -230,17 +230,17 @@ const MobileApplyButton = styled(Link)`
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     display: block;
     position: fixed;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
     background: ${props => props.theme.colors.secondary};
     color: white;
     text-align: center;
-    padding: 1rem;
+    padding: 0.75rem;
     font-weight: 600;
     text-decoration: none;
-    z-index: 1000;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 1002;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 `;
 

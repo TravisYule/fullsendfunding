@@ -21,11 +21,11 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Terms from './components/Terms/Terms';
 
 const MainContent = styled.main`
-  padding-top: 118px; // TopBar height (28px) + HeaderContainer height (90px)
+  padding-top: 118px;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding-top: 90px; // Adjusted for mobile header height
-    padding-bottom: 70px; // Add padding for mobile apply button
+    padding-top: 115px;
+    padding-bottom: 0;
   }
 `;
 
