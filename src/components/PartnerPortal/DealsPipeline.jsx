@@ -121,11 +121,12 @@ const DealInfo = styled.div`
 
 const stages = [
   'Intake',
+  'Review',
   'Underwriting',
   'Declined',
   'Resubmit',
   'Approved',
-  'Contracts Out',
+  'Docs Out',
   'Funded'
 ];
 
