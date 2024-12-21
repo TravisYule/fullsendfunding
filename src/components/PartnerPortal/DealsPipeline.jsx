@@ -111,33 +111,18 @@ const stages = [
   'Docs Out'
 ];
 
-const DealModal = styled(motion.div)`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-
-  h2 {
-    color: ${props => props.theme.colors.primary};
-    margin-bottom: 1.5rem;
-    padding-right: 2rem;
-  }
-`;
-
 const ModalOverlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 999;
 `;
 
@@ -180,6 +165,24 @@ const DetailValue = styled.span`
   color: ${props => props.theme.colors.primary};
   font-weight: 600;
   text-align: right;
+`;
+
+const DealModal = styled(motion.div)`
+  position: relative;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  margin: auto;
+
+  h2 {
+    color: ${props => props.theme.colors.primary};
+    margin-bottom: 1.5rem;
+    padding-right: 2rem;
+  }
 `;
 
 const DealsPipeline = () => {
@@ -286,17 +289,17 @@ const DealsPipeline = () => {
 
       <AnimatePresence>
         {selectedDeal && (
-          <>
-            <ModalOverlay
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedDeal(null)}
-            />
+          <ModalOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedDeal(null)}
+          >
             <DealModal
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
+              exit={{ opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
             >
               <CloseButton onClick={() => setSelectedDeal(null)}>&times;</CloseButton>
               <h2>{selectedDeal.business_name}</h2>
@@ -337,7 +340,7 @@ const DealsPipeline = () => {
                 <DetailValue>{new Date(selectedDeal.created_at).toLocaleDateString()}</DetailValue>
               </DetailRow>
             </DealModal>
-          </>
+          </ModalOverlay>
         )}
       </AnimatePresence>
     </PipelineContainer>
