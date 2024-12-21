@@ -15,8 +15,7 @@ const LoadingContainer = styled.div`
   z-index: 9999;
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding-top: ${props => props.theme.ios.topInset};
-    padding-bottom: ${props => props.theme.ios.bottomInset};
+    padding: 1rem;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.8);
