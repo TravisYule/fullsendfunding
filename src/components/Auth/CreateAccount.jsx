@@ -69,7 +69,7 @@ const ErrorMessage = styled.div`
 `;
 
 const CreateAccount = () => {
-  const { type } = useParams(); // 'partner' or 'customer'
+  const { type } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -87,7 +87,7 @@ const CreateAccount = () => {
     setLoading(true);
 
     try {
-      // Create auth user with email confirmation disabled
+      // Create auth user with metadata
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -98,26 +98,30 @@ const CreateAccount = () => {
             company: formData.company,
             role: type
           },
-          emailRedirectTo: undefined,
-          emailConfirm: false  // Disable email confirmation
+          emailRedirectTo: undefined // Disable email verification
         }
       });
 
       if (authError) throw authError;
 
-      // Set user as confirmed in Supabase
-      const { error: updateError } = await supabase.auth.updateUser({
-        email_confirm: true
-      });
+      // Update role in profiles table
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ 
+          role: type,
+          first_name: formData.firstName,
+          last_name: formData.lastName
+        })
+        .eq('id', authData.user.id);
 
-      if (updateError) throw updateError;
+      if (profileError) throw profileError;
 
       // Navigate to success page
       navigate(`/account-created/${type}`);
 
     } catch (err) {
       console.error('Error creating account:', err);
-      setError(err.message);
+      setError(err.message || 'Error creating account');
     } finally {
       setLoading(false);
     }
