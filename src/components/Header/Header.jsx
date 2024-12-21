@@ -33,7 +33,8 @@ const TopBar = styled.div`
   z-index: 1001;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    display: none;
+    padding: 0.25rem 0;
+    font-size: 0.75rem;
   }
 `;
 
@@ -225,11 +226,51 @@ const DropdownItem = styled(Link)`
   }
 `;
 
-const MobileMenu = styled.div`
+const MobileMenu = styled(motion.div)`
   display: none;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: block;
+    position: fixed;
+    top: 0;
+    right: ${props => props.isOpen ? '0' : '-100%'};
+    width: 85%;
+    max-width: 300px;
+    height: 100vh;
+    background: white;
+    padding: 4rem 1.5rem 2rem;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+
+    // Add better spacing for touch targets
+    a {
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      background: ${props => props.theme.colors.lightGray};
+      
+      &:active {
+        background: ${props => props.theme.colors.primary};
+        color: white;
+      }
+    }
+  }
+`;
+
+const MobileOverlay = styled(motion.div)`
+  display: none;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: ${props => props.isOpen ? 'block' : 'none'};
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
   }
 `;
 
@@ -274,6 +315,17 @@ const PortalButtons = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+`;
+
+const MobilePortalButtons = styled.div`
+  display: none;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
 `;
 
 const Header = () => {
@@ -338,6 +390,10 @@ const Header = () => {
       <MobileApplyButton to="/apply" onClick={handleScrollToTop}>
         Apply Now - Get Funded Today
       </MobileApplyButton>
+      <MobilePortalButtons>
+        <PortalButton to="/customer-login">Customer Portal</PortalButton>
+        <PortalLink to="/partner-dashboard">Partner Portal</PortalLink>
+      </MobilePortalButtons>
     </>
   );
 };
