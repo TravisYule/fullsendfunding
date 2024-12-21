@@ -74,19 +74,24 @@ const AnimatedNumber = ({ value }) => {
       let start = 0;
       const end = value;
       const duration = 2000; // 2 seconds
-      const increment = end / (duration / 16); // 60fps
+      let startTime = null;
 
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= end) {
-          setCount(end);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(start));
+      const easeOutQuart = t => 1 - Math.pow(1 - t, 4); // Easing function
+
+      const animate = timestamp => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const easedProgress = easeOutQuart(progress);
+        
+        const currentCount = Math.floor(easedProgress * end);
+        setCount(currentCount);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
         }
-      }, 16);
+      };
 
-      return () => clearInterval(timer);
+      requestAnimationFrame(animate);
     } else {
       setCount(0);
     }
