@@ -87,7 +87,7 @@ const CreateAccount = () => {
     setLoading(true);
 
     try {
-      // Create auth user without email verification
+      // Create auth user with email confirmation disabled
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -98,13 +98,21 @@ const CreateAccount = () => {
             company: formData.company,
             role: type
           },
-          emailRedirectTo: undefined // Disable email verification
+          emailRedirectTo: undefined,
+          emailConfirm: false  // Disable email confirmation
         }
       });
 
       if (authError) throw authError;
 
-      // Navigate to success page with type parameter
+      // Set user as confirmed in Supabase
+      const { error: updateError } = await supabase.auth.updateUser({
+        email_confirm: true
+      });
+
+      if (updateError) throw updateError;
+
+      // Navigate to success page
       navigate(`/account-created/${type}`);
 
     } catch (err) {
