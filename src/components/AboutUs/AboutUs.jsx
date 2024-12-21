@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaDollarSign, FaChartLine, FaShieldAlt } from 'react-icons/fa';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -96,122 +97,135 @@ const ImageContainer = styled.div`
 `;
 
 const AboutUs = () => {
+  const [ref1, controls1] = useReanimateOnScroll(0.2);
+  const [ref2, controls2] = useReanimateOnScroll(0.2);
+
+  const fadeInVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 30
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const scaleInVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.8
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
+
   return (
     <Section>
       <Container>
-        <ContentBlock
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+        <motion.div
+          ref={ref1}
+          animate={controls1}
+          initial="hidden"
+          variants={fadeInVariants}
         >
-          <Title>About Us</Title>
-          <Subtitle>Smart Financing Alternative for Your Small Business</Subtitle>
-          <Text>
-            Full Send Funding is one of the nation's fastest-growing providers of small business loans, 
-            helping numerous organizations with their capital needs. Our management team brings decades 
-            of combined alternative lending experience, and as former small business owners ourselves, 
-            we understand the challenges of running a small business.
-          </Text>
-          <Text>
-            By offering funding against a business' future receivables, we help businesses that are 
-            typically turned away by traditional banks obtain the working capital they need. Whether 
-            it's for inventory, paying off tax liens, new hires, or making payroll, Full Send Funding 
-            is your trusted alternative lending source.
-          </Text>
-        </ContentBlock>
-
-        <ContentBlock
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <Subtitle>Simple Application Process</Subtitle>
-          <Text>
-            We promise a remarkably seamless process to secure capital. Getting a lending decision 
-            requires only a one-page application and your last three months of business bank statements. 
-            If approved, we collect minimal additional documentation, and funding takes place within 24 hours. 
-            No collateral is required.
-          </Text>
-        </ContentBlock>
-
-        <LocationBlock
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <LocationContent>
-            <Subtitle>Our Unique Location</Subtitle>
+          <ContentBlock>
+            <Title>About Us</Title>
+            <Subtitle>Smart Financing Alternative for Your Small Business</Subtitle>
             <Text>
-              Unlike traditional financial institutions concentrated in crowded urban centers, 
-              Full Send Funding proudly calls Saratoga Springs, New York home. Nestled at the 
-              foothills of the majestic Adirondack Mountains, our location reflects our 
-              different approach to business funding.
+              Full Send Funding is one of the nation's fastest-growing providers of small business loans, 
+              helping numerous organizations with their capital needs. Our management team brings decades 
+              of combined alternative lending experience, and as former small business owners ourselves, 
+              we understand the challenges of running a small business.
             </Text>
             <Text>
-              The Adirondack Park, with its six million acres of protected wilderness, serves 
-              as a daily reminder of the importance of stability, longevity, and sustainable 
-              growth - principles we apply to our funding solutions. Our setting in historic 
-              Saratoga Springs, known for its mineral springs and rich heritage, allows us to 
-              maintain a clearer perspective on the real needs of American small businesses.
+              By offering funding against a business' future receivables, we help businesses that are 
+              typically turned away by traditional banks obtain the working capital they need. Whether 
+              it's for inventory, paying off tax liens, new hires, or making payroll, Full Send Funding 
+              is your trusted alternative lending source.
             </Text>
+          </ContentBlock>
+
+          <ContentBlock>
+            <Subtitle>Simple Application Process</Subtitle>
             <Text>
-              Away from the fast-paced, often impersonal environment of big city financial 
-              districts, we've created a more thoughtful, relationship-focused approach to 
-              business funding. Our location enables us to maintain lower overhead costs, 
-              savings we pass directly to our clients through more competitive rates and 
-              flexible terms.
+              We promise a remarkably seamless process to secure capital. Getting a lending decision 
+              requires only a one-page application and your last three months of business bank statements. 
+              If approved, we collect minimal additional documentation, and funding takes place within 24 hours. 
+              No collateral is required.
             </Text>
-          </LocationContent>
-        </LocationBlock>
+          </ContentBlock>
+        </motion.div>
 
-        <StatsGrid>
-          <StatCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <StatIcon><FaCheckCircle /></StatIcon>
-            <StatTitle>A+ Rating</StatTitle>
-            <StatText>with the Better Business Bureau</StatText>
-          </StatCard>
+        <motion.div
+          ref={ref2}
+          animate={controls2}
+          initial="hidden"
+          variants={scaleInVariants}
+        >
+          <LocationBlock>
+            <LocationContent>
+              <Subtitle>Our Unique Location</Subtitle>
+              <Text>
+                Unlike traditional financial institutions concentrated in crowded urban centers, 
+                Full Send Funding proudly calls Saratoga Springs, New York home. Nestled at the 
+                foothills of the majestic Adirondack Mountains, our location reflects our 
+                different approach to business funding.
+              </Text>
+              <Text>
+                The Adirondack Park, with its six million acres of protected wilderness, serves 
+                as a daily reminder of the importance of stability, longevity, and sustainable 
+                growth - principles we apply to our funding solutions. Our setting in historic 
+                Saratoga Springs, known for its mineral springs and rich heritage, allows us to 
+                maintain a clearer perspective on the real needs of American small businesses.
+              </Text>
+              <Text>
+                Away from the fast-paced, often impersonal environment of big city financial 
+                districts, we've created a more thoughtful, relationship-focused approach to 
+                business funding. Our location enables us to maintain lower overhead costs, 
+                savings we pass directly to our clients through more competitive rates and 
+                flexible terms.
+              </Text>
+            </LocationContent>
+          </LocationBlock>
 
-          <StatCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <StatIcon><FaDollarSign /></StatIcon>
-            <StatTitle>$100 Million+</StatTitle>
-            <StatText>Delivered to small businesses</StatText>
-          </StatCard>
+          <StatsGrid>
+            <StatCard>
+              <StatIcon><FaCheckCircle /></StatIcon>
+              <StatTitle>A+ Rating</StatTitle>
+              <StatText>with the Better Business Bureau</StatText>
+            </StatCard>
 
-          <StatCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            <StatIcon><FaChartLine /></StatIcon>
-            <StatTitle>#1 Funding</StatTitle>
-            <StatText>Fast and reliable business funding</StatText>
-          </StatCard>
+            <StatCard>
+              <StatIcon><FaDollarSign /></StatIcon>
+              <StatTitle>$100 Million+</StatTitle>
+              <StatText>Delivered to small businesses</StatText>
+            </StatCard>
 
-          <StatCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <StatIcon><FaShieldAlt /></StatIcon>
-            <StatTitle>Security</StatTitle>
-            <StatText>Bank Level Security Provided</StatText>
-          </StatCard>
-        </StatsGrid>
+            <StatCard>
+              <StatIcon><FaChartLine /></StatIcon>
+              <StatTitle>#1 Funding</StatTitle>
+              <StatText>Fast and reliable business funding</StatText>
+            </StatCard>
+
+            <StatCard>
+              <StatIcon><FaShieldAlt /></StatIcon>
+              <StatTitle>Security</StatTitle>
+              <StatText>Bank Level Security Provided</StatText>
+            </StatCard>
+          </StatsGrid>
+        </motion.div>
       </Container>
     </Section>
   );

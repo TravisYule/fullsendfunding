@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { formatCurrency, parseCurrency } from '../../utils/formatters';
 import { useNavigate } from 'react-router-dom';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Form = styled.form`
   display: flex;
@@ -89,6 +90,26 @@ const QuickApplicationForm = () => {
     industry: ''
   });
 
+  const [ref, controls] = useReanimateOnScroll(0.1);
+
+  const formVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.95,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 20
+      }
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -116,7 +137,13 @@ const QuickApplicationForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <FormContainer
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={formVariants}
+      onSubmit={handleSubmit}
+    >
       <FormTitle>Get Funded in 24 Hours</FormTitle>
       
       <InputGroup>
@@ -203,7 +230,7 @@ const QuickApplicationForm = () => {
       >
         Get Funded Now
       </SubmitButton>
-    </Form>
+    </FormContainer>
   );
 };
 

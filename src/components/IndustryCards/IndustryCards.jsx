@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaStore, FaUtensils, FaTruck, FaTools, FaHotel, FaMedkit } from 'react-icons/fa';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -117,26 +118,49 @@ const industries = [
   }
 ];
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-};
-
 const IndustryCards = () => {
+  const [ref, controls] = useReanimateOnScroll(0.1);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 50,
+      scale: 0.9
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
+
   return (
     <Section>
-      <Container>
+      <Container
+        ref={ref}
+        animate={controls}
+        initial="hidden"
+        variants={containerVariants}
+      >
         <SectionTitle>Industries We Serve</SectionTitle>
         <CardGrid>
           {industries.map((industry, index) => (
             <Card
               key={index}
               variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <IconWrapper>{industry.icon}</IconWrapper>
               <IndustryTitle>{industry.title}</IndustryTitle>
