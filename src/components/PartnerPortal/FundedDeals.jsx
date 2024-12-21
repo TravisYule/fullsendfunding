@@ -1,82 +1,104 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../../utils/supabaseClient';
+import { formatCurrency } from '../../utils/formatters';
 
 const Container = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.primary};
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const DealsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
-const DealCard = styled.div`
-  background: ${props => props.theme.colors.lightGray};
-  padding: 1.5rem;
+const DealCard = styled(motion.div)`
+  background: white;
+  padding: 1.2rem;
   border-radius: 8px;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateX(5px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 `;
 
 const BusinessName = styled.h3`
   color: ${props => props.theme.colors.primary};
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
   font-size: 1.2rem;
 `;
 
-const InfoGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-`;
-
-const InfoItem = styled.div`
-  .label {
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 0.25rem;
-  }
+const DealAmount = styled.div`
+  color: ${props => props.theme.colors.secondary};
+  font-weight: 600;
+  margin: 0.75rem 0;
+  font-size: 1.2rem;
   
-  .value {
-    font-weight: bold;
-    color: ${props => props.theme.colors.secondary};
+  &::before {
+    content: 'Funded: ';
+    font-size: 0.9rem;
+    color: ${props => props.theme.colors.text};
+    font-weight: normal;
   }
 `;
 
-const RenewalStatus = styled.div`
-  padding: 0.5rem;
-  background: ${props => 
-    props.status === 'eligible' 
-      ? '#e6ffe6' 
-      : props.status === 'soon'
-      ? '#fff3e6'
-      : '#ffe6e6'};
-  color: ${props => 
-    props.status === 'eligible'
-      ? '#006600'
-      : props.status === 'soon'
-      ? '#cc7700'
-      : '#cc0000'};
-  border-radius: 4px;
-  text-align: center;
-  font-weight: 500;
+const DealInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-size: 0.9rem;
+  color: ${props => props.theme.colors.text};
 `;
+
+// Reuse the modal components from DealsPipeline
+const ModalOverlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+`;
+
+const DealModal = styled(motion.div)`
+  position: relative;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  margin: auto;
+
+  h2 {
+    color: ${props => props.theme.colors.primary};
+    margin-bottom: 1.5rem;
+    padding-right: 2rem;
+  }
+`;
+
+// ... other styled components from DealsPipeline ...
 
 const FundedDeals = () => {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDeal, setSelectedDeal] = useState(null);
 
   useEffect(() => {
     fetchFundedDeals();
@@ -87,18 +109,11 @@ const FundedDeals = () => {
       const { data: { user } } = await supabase.auth.getUser();
       
       const { data, error } = await supabase
-        .from('deals')
-        .select(`
-          *,
-          payments:deal_payments(
-            amount,
-            due_date,
-            status
-          )
-        `)
+        .from('applications')
+        .select('*')
         .eq('partner_id', user.id)
-        .eq('status', 'Funded')
-        .order('funded_date', { ascending: false });
+        .eq('status', 'Funded')  // Only get funded deals
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       setDeals(data || []);
@@ -109,84 +124,58 @@ const FundedDeals = () => {
     }
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount);
-  };
-
-  const calculateRemainingBalance = (deal) => {
-    const paidPayments = deal.payments?.filter(p => p.status === 'paid') || [];
-    const totalPaid = paidPayments.reduce((sum, p) => sum + p.amount, 0);
-    return deal.funded_amount - totalPaid;
-  };
-
-  const getRenewalStatus = (deal) => {
-    const remainingBalance = calculateRemainingBalance(deal);
-    const percentPaid = 1 - (remainingBalance / deal.funded_amount);
-    
-    if (percentPaid >= 0.5) return 'eligible';
-    if (percentPaid >= 0.4) return 'soon';
-    return 'not-eligible';
-  };
-
-  const getRenewalText = (status) => {
-    switch (status) {
-      case 'eligible':
-        return 'Eligible for Renewal';
-      case 'soon':
-        return 'Soon Eligible';
-      default:
-        return 'Not Yet Eligible';
-    }
-  };
-
-  if (loading) {
-    return <div>Loading funded deals...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Container>
       <DealsGrid>
-        {deals.map(deal => {
-          const renewalStatus = getRenewalStatus(deal);
-          const remainingBalance = calculateRemainingBalance(deal);
-          
-          return (
-            <DealCard key={deal.id}>
-              <BusinessName>{deal.business_name}</BusinessName>
-              <InfoGrid>
-                <InfoItem>
-                  <div className="label">Funded Amount</div>
-                  <div className="value">{formatCurrency(deal.funded_amount)}</div>
-                </InfoItem>
-                <InfoItem>
-                  <div className="label">Remaining Balance</div>
-                  <div className="value">{formatCurrency(remainingBalance)}</div>
-                </InfoItem>
-                <InfoItem>
-                  <div className="label">Funded Date</div>
-                  <div className="value">
-                    {new Date(deal.funded_date).toLocaleDateString()}
-                  </div>
-                </InfoItem>
-                <InfoItem>
-                  <div className="label">Next Payment</div>
-                  <div className="value">
-                    {deal.payments?.find(p => p.status === 'pending')?.due_date
-                      ? new Date(deal.payments.find(p => p.status === 'pending').due_date).toLocaleDateString()
-                      : 'N/A'}
-                  </div>
-                </InfoItem>
-              </InfoGrid>
-              <RenewalStatus status={renewalStatus}>
-                {getRenewalText(renewalStatus)}
-              </RenewalStatus>
-            </DealCard>
-          );
-        })}
+        {deals.map(deal => (
+          <DealCard
+            key={deal.id}
+            onClick={() => setSelectedDeal(deal)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <BusinessName>{deal.business_name}</BusinessName>
+            <DealAmount>{formatCurrency(deal.amount)}</DealAmount>
+            <DealInfo>
+              <div>Client: {deal.first_name} {deal.last_name}</div>
+              <div>Funded: {new Date(deal.created_at).toLocaleDateString()}</div>
+            </DealInfo>
+          </DealCard>
+        ))}
       </DealsGrid>
+
+      <AnimatePresence>
+        {selectedDeal && (
+          <ModalOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedDeal(null)}
+          >
+            <DealModal
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CloseButton onClick={() => setSelectedDeal(null)}>&times;</CloseButton>
+              <h2>{selectedDeal.business_name}</h2>
+              {/* Same detail rows as DealsPipeline */}
+              <DetailRow>
+                <DetailLabel>Client Name</DetailLabel>
+                <DetailValue>{selectedDeal.first_name} {selectedDeal.last_name}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Funded Amount</DetailLabel>
+                <DetailValue>{formatCurrency(selectedDeal.amount)}</DetailValue>
+              </DetailRow>
+              {/* Add more details as needed */}
+            </DealModal>
+          </ModalOverlay>
+        )}
+      </AnimatePresence>
     </Container>
   );
 };
