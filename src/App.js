@@ -22,6 +22,7 @@ import Terms from './components/Terms/Terms';
 import FundingCalculator from './components/Calculator/FundingCalculator';
 import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from './components/Auth/ResetPassword';
+import ThankYou from './components/ThankYou/ThankYou';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -67,6 +68,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/calculator" element={<FundingCalculator />} />
+          <Route path="/thank-you" element={<ThankYou />} />
 
           {/* Partner Portal routes - wrapped in Suspense for lazy loading */}
           <Route path="/partner-login" element={
