@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { FaStar, FaDollarSign, FaAward, FaShieldAlt } from 'react-icons/fa';
 
 const BannerContainer = styled.div`
@@ -60,6 +62,30 @@ const Subtitle = styled.div`
   opacity: 0.8;
 `;
 
+const CountingNumber = ({ end, duration = 2 }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: false,
+    threshold: 0.1
+  });
+  
+  return (
+    <motion.span
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : { opacity: 0 }}
+    >
+      <motion.span
+        initial={{ count: 0 }}
+        animate={inView ? { count: end } : { count: 0 }}
+        transition={{ duration }}
+        onAnimationComplete={() => {}}
+      >
+        {({ count }) => Math.floor(count)}
+      </motion.span>
+    </motion.span>
+  );
+};
+
 const AccoladeBanner = () => {
   return (
     <BannerContainer>
@@ -72,14 +98,16 @@ const AccoladeBanner = () => {
 
         <AccoladeItem>
           <Icon><FaDollarSign /></Icon>
-          <Title>100 Million</Title>
+          <Title>
+            <CountingNumber end={100} /> Million
+          </Title>
           <Subtitle>Delivered to small businesses</Subtitle>
         </AccoladeItem>
 
         <AccoladeItem>
           <Icon><FaAward /></Icon>
-          <Title>#1 Funding</Title>
-          <Subtitle>Funding since 2023</Subtitle>
+          <Title>Funding Since 2021</Title>
+          <Subtitle>Fast and reliable business funding</Subtitle>
         </AccoladeItem>
 
         <AccoladeItem>
