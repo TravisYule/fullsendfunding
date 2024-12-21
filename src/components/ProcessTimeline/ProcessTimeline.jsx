@@ -13,20 +13,47 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
+const Title = styled.h2`
+  color: ${props => props.theme.colors.primary};
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 4rem;
+`;
+
 const Timeline = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
+  max-width: 800px;
+  margin: 0 auto;
 `;
 
 const Step = styled(motion.div)`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 2rem;
+  position: relative;
+
+  &:not(:last-child):after {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 60px;
+    bottom: -3rem;
+    width: 2px;
+    background: ${props => props.theme.colors.secondary};
+    opacity: 0.3;
+  }
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     flex-direction: column;
+    align-items: center;
     text-align: center;
+    
+    &:not(:last-child):after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 `;
 
@@ -42,10 +69,23 @@ const StepNumber = styled(motion.div)`
   font-size: 1.5rem;
   font-weight: bold;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(255, 75, 75, 0.2);
 `;
 
 const StepContent = styled(motion.div)`
   flex: 1;
+  padding-top: 0.5rem;
+`;
+
+const StepTitle = styled.h3`
+  color: ${props => props.theme.colors.primary};
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+`;
+
+const StepDescription = styled.p`
+  color: ${props => props.theme.colors.text};
+  line-height: 1.6;
 `;
 
 const ProcessTimeline = () => {
@@ -139,6 +179,7 @@ const ProcessTimeline = () => {
   return (
     <Section>
       <Container>
+        <Title>How It Works</Title>
         <Timeline
           ref={ref}
           animate={controls}
@@ -151,8 +192,8 @@ const ProcessTimeline = () => {
                 {step.number}
               </StepNumber>
               <StepContent variants={contentVariants}>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
+                <StepTitle>{step.title}</StepTitle>
+                <StepDescription>{step.description}</StepDescription>
               </StepContent>
             </Step>
           ))}
