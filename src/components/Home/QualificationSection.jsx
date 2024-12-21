@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaCheckCircle } from 'react-icons/fa';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -63,16 +64,30 @@ const QualificationText = styled.p`
 `;
 
 const QualificationSection = () => {
+  const [ref, controls] = useReanimateOnScroll(0.3);
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <Section>
       <Container>
         <Title>Qualifications for Business Funding</Title>
         <QualificationGrid>
           <QualificationCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            ref={ref}
+            animate={controls}
+            initial="hidden"
+            variants={cardVariants}
           >
             <Icon><FaCheckCircle /></Icon>
             <QualificationTitle>3+ Months in Business</QualificationTitle>
@@ -82,9 +97,10 @@ const QualificationSection = () => {
           </QualificationCard>
 
           <QualificationCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            ref={ref}
+            animate={controls}
+            initial="hidden"
+            variants={cardVariants}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Icon><FaCheckCircle /></Icon>
@@ -95,9 +111,10 @@ const QualificationSection = () => {
           </QualificationCard>
 
           <QualificationCard
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            ref={ref}
+            animate={controls}
+            initial="hidden"
+            variants={cardVariants}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <Icon><FaCheckCircle /></Icon>

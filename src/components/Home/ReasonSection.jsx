@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -51,14 +52,30 @@ const ReadMore = styled.button`
 `;
 
 const ReasonSection = () => {
+  const [ref1, controls1] = useReanimateOnScroll();
+  const [ref2, controls2] = useReanimateOnScroll();
+  const [ref3, controls3] = useReanimateOnScroll();
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
     <Section>
       <Container>
         <ReasonCard
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          ref={ref1}
+          animate={controls1}
+          initial="hidden"
+          variants={fadeInUp}
         >
           <Title>Reasons For Funding</Title>
           <Description>
@@ -68,9 +85,10 @@ const ReasonSection = () => {
         </ReasonCard>
 
         <ReasonCard
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          ref={ref2}
+          animate={controls2}
+          initial="hidden"
+          variants={fadeInUp}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Title>Why You Should Apply</Title>
@@ -81,9 +99,10 @@ const ReasonSection = () => {
         </ReasonCard>
 
         <ReasonCard
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          ref={ref3}
+          animate={controls3}
+          initial="hidden"
+          variants={fadeInUp}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <Title>Help Your Business Succeed</Title>
