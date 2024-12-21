@@ -45,6 +45,12 @@ const BenefitsGrid = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
 `;
 
 const BenefitCard = styled(motion.div)`
@@ -59,6 +65,15 @@ const BenefitCard = styled(motion.div)`
   &:hover {
     transform: translateY(-10px) scale(1.04);
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1.5rem;
+    
+    &:hover {
+      transform: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
   }
 `;
 
@@ -85,6 +100,12 @@ const InfoSection = styled.div`
   padding: 3rem;
   border-radius: 8px;
   margin-bottom: 4rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 8px;
+  }
 `;
 
 const InfoTitle = styled.h2`

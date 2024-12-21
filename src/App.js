@@ -27,8 +27,8 @@ const MainContent = styled.main`
   padding-top: 118px;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding-top: 115px;
-    padding-bottom: 0;
+    padding-top: 70px;
+    padding-bottom: 60px;
   }
 `;
 

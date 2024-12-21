@@ -18,6 +18,11 @@ const CalculatorContainer = styled.div`
     transform: translateY(-5px);
     box-shadow: 0 6px 25px rgba(0,0,0,0.1);
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1rem;
+    margin: 0;
+  }
 `;
 
 const Title = styled.h2`
@@ -56,6 +61,13 @@ const Input = styled.input`
     border-color: ${props => props.theme.colors.secondary};
     outline: none;
     box-shadow: 0 0 0 3px rgba(255, 75, 75, 0.1);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.75rem;
+    font-size: 16px;
+    -webkit-appearance: none;
+    border-radius: 8px;
   }
 `;
 
@@ -149,6 +161,11 @@ const StepIndicator = styled.div`
   justify-content: center;
   gap: 1rem;
   margin-bottom: 2rem;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const Step = styled.div`

@@ -32,6 +32,11 @@ const Title = styled.h1`
   color: ${props => props.theme.colors.primary};
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -59,6 +64,16 @@ const IndustryCard = styled(motion.div)`
   &:hover {
     transform: translateY(-10px) scale(1.04);
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1.5rem;
+    margin: 0 1rem;
+    
+    &:hover {
+      transform: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
   }
 `;
 
