@@ -226,6 +226,7 @@ const SubmitDeal = () => {
         email: formData.email,
         phone: formData.phone,
         monthly_revenue: parseCurrency(formData.monthlyRevenue),
+        amount: parseCurrency(formData.fundingAmount),
         funding_amount: formData.fundingAmount,
         industry: formData.industry,
         time_in_business: formData.timeInBusiness,
