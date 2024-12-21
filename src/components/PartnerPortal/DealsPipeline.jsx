@@ -157,7 +157,7 @@ const DealsPipeline = () => {
         .from('deals')
         .select('*')
         .eq('partner_id', user.id)
-        .order('created_at', { ascending: false });
+        .order('submitted_at', { ascending: false });
 
       if (error) throw error;
       setDeals(data || []);

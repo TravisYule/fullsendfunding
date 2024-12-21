@@ -217,6 +217,8 @@ const SubmitDeal = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
+      const amountValue = formData.fundingAmount.split('-')[0];
+      
       const dealData = {
         business_name: formData.businessName,
         client_first_name: formData.firstName,
@@ -226,7 +228,7 @@ const SubmitDeal = () => {
         email: formData.email,
         phone: formData.phone,
         monthly_revenue: parseCurrency(formData.monthlyRevenue),
-        amount: parseCurrency(formData.fundingAmount),
+        amount: parseInt(amountValue),
         funding_amount: formData.fundingAmount,
         industry: formData.industry,
         time_in_business: formData.timeInBusiness,
