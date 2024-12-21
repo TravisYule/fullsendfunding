@@ -117,12 +117,18 @@ const DealModal = styled(motion.div)`
   left: 50%;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 12px;
   width: 90%;
-  max-width: 600px;
+  max-width: 500px;
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+
+  h2 {
+    color: ${props => props.theme.colors.primary};
+    margin-bottom: 1.5rem;
+    padding-right: 2rem;
+  }
 `;
 
 const ModalOverlay = styled(motion.div)`
@@ -141,15 +147,22 @@ const CloseButton = styled.button`
   right: 1rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   cursor: pointer;
   color: ${props => props.theme.colors.primary};
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const DetailRow = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0.75rem 0;
+  align-items: center;
+  padding: 1rem 0;
   border-bottom: 1px solid ${props => props.theme.colors.lightGray};
   
   &:last-child {
@@ -160,10 +173,13 @@ const DetailRow = styled.div`
 const DetailLabel = styled.span`
   color: ${props => props.theme.colors.text};
   font-weight: 500;
+  font-size: 0.95rem;
 `;
 
 const DetailValue = styled.span`
   color: ${props => props.theme.colors.primary};
+  font-weight: 600;
+  text-align: right;
 `;
 
 const DealsPipeline = () => {
