@@ -87,7 +87,7 @@ const CreateAccount = () => {
     setLoading(true);
 
     try {
-      // Create auth user
+      // Create auth user without email verification
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -96,29 +96,16 @@ const CreateAccount = () => {
             first_name: formData.firstName,
             last_name: formData.lastName,
             company: formData.company,
-            role: type // 'partner' or 'customer'
-          }
+            role: type
+          },
+          emailRedirectTo: undefined // Disable email verification
         }
       });
 
       if (authError) throw authError;
 
-      // Create profile record
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([{
-          id: authData.user.id,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          company: formData.company,
-          role: type,
-          email: formData.email
-        }]);
-
-      if (profileError) throw profileError;
-
-      // Redirect to success page
-      navigate('/account-created');
+      // Navigate to success page with type parameter
+      navigate(`/account-created/${type}`);
 
     } catch (err) {
       console.error('Error creating account:', err);

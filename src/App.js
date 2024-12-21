@@ -24,6 +24,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from './components/Auth/ResetPassword';
 import ThankYou from './components/ThankYou/ThankYou';
 import CreateAccount from './components/Auth/CreateAccount';
+import AccountCreated from './components/Auth/AccountCreated';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -114,6 +115,7 @@ function App() {
           } />
 
           <Route path="/create-account/:type" element={<CreateAccount />} />
+          <Route path="/account-created/:type" element={<AccountCreated />} />
         </Routes>
       </MainContent>
       <AccoladeBanner />
