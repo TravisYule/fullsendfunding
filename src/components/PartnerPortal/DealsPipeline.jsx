@@ -7,13 +7,16 @@ const PipelineContainer = styled.div`
   background: ${props => props.theme.colors.primary};
   padding: 2rem;
   border-radius: 12px;
+  width: 100%;
+  overflow-x: auto;
 `;
 
 const StagesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(200px, 1fr));
   gap: 1rem;
   padding: 1rem;
+  min-width: fit-content;
 `;
 
 const StageColumn = styled(motion.div)`
@@ -29,6 +32,8 @@ const StageView = styled(motion.div)`
   padding: 2rem;
   border-radius: 8px;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const BackButton = styled.button`
@@ -108,6 +113,13 @@ const DealAmount = styled.div`
   font-weight: 600;
   margin: 0.75rem 0;
   font-size: 1.2rem;
+  
+  &::before {
+    content: 'Requested: ';
+    font-size: 0.9rem;
+    color: ${props => props.theme.colors.text};
+    font-weight: normal;
+  }
 `;
 
 const DealInfo = styled.div`
@@ -218,7 +230,7 @@ const DealsPipeline = () => {
                     <BusinessName>{deal.business_name}</BusinessName>
                     <DealAmount>{formatCurrency(deal.amount)}</DealAmount>
                     <DealInfo>
-                      <div>Client: {deal.client_name}</div>
+                      <div>Client: {deal.first_name} {deal.last_name}</div>
                       <div>Submitted: {new Date(deal.created_at).toLocaleDateString()}</div>
                     </DealInfo>
                   </DealCard>
@@ -248,7 +260,7 @@ const DealsPipeline = () => {
                   <BusinessName>{deal.business_name}</BusinessName>
                   <DealAmount>{formatCurrency(deal.amount)}</DealAmount>
                   <DealInfo>
-                    <div>Client: {deal.client_name}</div>
+                    <div>Client: {deal.first_name} {deal.last_name}</div>
                     <div>Submitted: {new Date(deal.created_at).toLocaleDateString()}</div>
                   </DealInfo>
                 </DealCard>
