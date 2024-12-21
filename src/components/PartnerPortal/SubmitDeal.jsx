@@ -4,6 +4,8 @@ import { supabase } from '../../utils/supabaseClient';
 import { motion } from 'framer-motion';
 import { formatCurrency, parseCurrency } from '../../utils/formatters';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import LoadingOverlay from '../shared/LoadingOverlay';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   background: white;
@@ -112,24 +114,39 @@ const SuccessMessage = styled.div`
 
 const FileUploadSection = styled.div`
   margin-bottom: 2rem;
-`;
-
-const FileLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
+  padding: 2rem;
+  background: white;
+  border: 2px dashed ${props => props.theme.colors.secondary};
+  border-radius: 8px;
+  text-align: center;
 `;
 
 const FileInput = styled.input`
   display: none;
 `;
 
+const FileLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 1rem;
+  
+  &:hover {
+    color: ${props => props.theme.colors.secondary};
+  }
+`;
+
+const UploadIcon = styled(FaCloudUploadAlt)`
+  font-size: 2.5rem;
+  color: ${props => props.theme.colors.secondary};
+`;
+
 const FileList = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin-top: 1rem;
 `;
 
 const FileItem = styled.li`
@@ -137,7 +154,7 @@ const FileItem = styled.li`
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  background: ${props => props.theme.colors.lightGray};
   border-radius: 4px;
   margin-bottom: 0.5rem;
 `;
@@ -145,8 +162,20 @@ const FileItem = styled.li`
 const RemoveButton = styled.button`
   background: none;
   border: none;
+  color: ${props => props.theme.colors.secondary};
   cursor: pointer;
-  color: #666;
+  padding: 0.25rem 0.5rem;
+  
+  &:hover {
+    color: red;
+  }
+`;
+
+const RequiredNote = styled.p`
+  color: ${props => props.theme.colors.secondary};
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-style: italic;
 `;
 
 const CheckboxContainer = styled.div`
@@ -162,10 +191,6 @@ const CheckboxLabel = styled.label`
 const Checkbox = styled.input`
   width: 1rem;
   height: 1rem;
-`;
-
-const UploadIcon = styled(FaCloudUploadAlt)`
-  color: #666;
 `;
 
 const initialFormState = {
@@ -192,6 +217,7 @@ const SubmitDeal = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -244,11 +270,12 @@ const SubmitDeal = () => {
 
       if (submitError) throw submitError;
 
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
       setSuccess(true);
       setFormData(initialFormState);
-      setTimeout(() => {
-        setSuccess(false);
-      }, 5000);
+      
+      navigate('/partner-dashboard');
 
     } catch (err) {
       console.error('Error:', err);
@@ -260,6 +287,7 @@ const SubmitDeal = () => {
 
   return (
     <Container>
+      {isSubmitting && <LoadingOverlay />}
       <Form onSubmit={handleSubmit}>
         <Title>Submit New Deal</Title>
 
@@ -432,35 +460,40 @@ const SubmitDeal = () => {
           </InputGroup>
         </FormSection>
 
-        {/* File Upload Section */}
-        <FileUploadSection>
-          <FileLabel htmlFor="file-upload">
-            <UploadIcon />
-            <span>Upload Required Documents</span>
-            <span style={{ fontSize: '0.9rem', color: '#666' }}>
-              Last 4 months bank statements, Driver's License, Voided Check
-            </span>
-          </FileLabel>
-          <FileInput
-            id="file-upload"
-            type="file"
-            multiple
-            onChange={(e) => setFiles(Array.from(e.target.files))}
-            accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
-          />
-          {files.length > 0 && (
-            <FileList>
-              {files.map((file, index) => (
-                <FileItem key={index}>
-                  <span>{file.name}</span>
-                  <RemoveButton onClick={() => {
-                    setFiles(files.filter((_, i) => i !== index));
-                  }}>×</RemoveButton>
-                </FileItem>
-              ))}
-            </FileList>
-          )}
-        </FileUploadSection>
+        <FormSection>
+          <SectionTitle>Required Documents</SectionTitle>
+          <FileUploadSection>
+            <FileLabel htmlFor="file-upload">
+              <UploadIcon />
+              <span>Upload Required Documents</span>
+              <span style={{ fontSize: '0.9rem', color: '#666' }}>
+                Last 4 months bank statements, Driver's License, Voided Check
+              </span>
+            </FileLabel>
+            <FileInput
+              id="file-upload"
+              type="file"
+              multiple
+              onChange={(e) => setFiles(Array.from(e.target.files))}
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+            />
+            {files.length > 0 && (
+              <FileList>
+                {files.map((file, index) => (
+                  <FileItem key={index}>
+                    <span>{file.name}</span>
+                    <RemoveButton onClick={() => {
+                      setFiles(files.filter((_, i) => i !== index));
+                    }}>×</RemoveButton>
+                  </FileItem>
+                ))}
+              </FileList>
+            )}
+          </FileUploadSection>
+          <RequiredNote>
+            *For expedited funding please attach the last 4 months of Business Bank Statements, Driver's License, and Voided Check
+          </RequiredNote>
+        </FormSection>
 
         <CheckboxContainer>
           <CheckboxLabel>
