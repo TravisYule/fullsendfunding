@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { FaStar, FaDollarSign, FaAward, FaShieldAlt } from 'react-icons/fa';
 
 const BannerContainer = styled.div`
@@ -60,6 +62,24 @@ const Subtitle = styled.div`
   opacity: 0.8;
 `;
 
+const AnimatedNumber = ({ value }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: false,
+    threshold: 0.1
+  });
+
+  return (
+    <motion.span
+      ref={ref}
+      initial={{ count: 0 }}
+      animate={inView ? { count: value } : { count: 0 }}
+      transition={{ duration: 2, type: "spring", bounce: 0 }}
+    >
+      {({ count }) => Math.round(count)}
+    </motion.span>
+  );
+};
+
 const AccoladeBanner = () => {
   return (
     <BannerContainer>
@@ -72,14 +92,14 @@ const AccoladeBanner = () => {
 
         <AccoladeItem>
           <Icon><FaDollarSign /></Icon>
-          <Title>100 Million</Title>
+          <Title><AnimatedNumber value={100} /> Million</Title>
           <Subtitle>Delivered to small businesses</Subtitle>
         </AccoladeItem>
 
         <AccoladeItem>
           <Icon><FaAward /></Icon>
           <Title>#1 Funding</Title>
-          <Subtitle>Funding since 2023</Subtitle>
+          <Subtitle>Funding since 2021</Subtitle>
         </AccoladeItem>
 
         <AccoladeItem>
