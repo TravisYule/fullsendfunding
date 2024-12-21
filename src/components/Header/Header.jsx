@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/Logo.png';
 import { FaPhone, FaEnvelope } from 'react-icons/fa';
