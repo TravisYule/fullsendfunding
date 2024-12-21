@@ -95,6 +95,12 @@ const DealModal = styled(motion.div)`
 
 // ... other styled components from DealsPipeline ...
 
+// Add safe formatting function
+const safeFormatCurrency = (value) => {
+  if (!value && value !== 0) return '$0';
+  return formatCurrency(value);
+};
+
 const FundedDeals = () => {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -137,7 +143,7 @@ const FundedDeals = () => {
             animate={{ opacity: 1, y: 0 }}
           >
             <BusinessName>{deal.business_name}</BusinessName>
-            <DealAmount>{formatCurrency(deal.amount)}</DealAmount>
+            <DealAmount>{safeFormatCurrency(deal.amount)}</DealAmount>
             <DealInfo>
               <div>Client: {deal.first_name} {deal.last_name}</div>
               <div>Funded: {new Date(deal.created_at).toLocaleDateString()}</div>
@@ -169,7 +175,7 @@ const FundedDeals = () => {
               </DetailRow>
               <DetailRow>
                 <DetailLabel>Funded Amount</DetailLabel>
-                <DetailValue>{formatCurrency(selectedDeal.amount)}</DetailValue>
+                <DetailValue>{safeFormatCurrency(selectedDeal.amount)}</DetailValue>
               </DetailRow>
               {/* Add more details as needed */}
             </DealModal>
