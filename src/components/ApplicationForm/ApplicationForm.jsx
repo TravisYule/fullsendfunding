@@ -200,7 +200,8 @@ const Checkbox = styled.input`
 
 const initialFormState = {
   businessName: '',
-  ownerName: '',
+  firstName: '',
+  lastName: '',
   dateOfBirth: '',
   socialSecurityNumber: '',
   email: '',
@@ -266,7 +267,8 @@ const ApplicationForm = () => {
       // Format the data for Supabase
       const applicationData = {
         business_name: formData.businessName,
-        owner_name: formData.ownerName,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
         date_of_birth: formData.dateOfBirth,
         ssn: formData.socialSecurityNumber,
         email: formData.email,
@@ -359,12 +361,24 @@ const ApplicationForm = () => {
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="ownerName">Owner Name</Label>
+            <Label htmlFor="firstName">First Name</Label>
             <Input
               type="text"
-              id="ownerName"
-              name="ownerName"
-              value={formData.ownerName}
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              required
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
               onChange={handleChange}
               required
             />
