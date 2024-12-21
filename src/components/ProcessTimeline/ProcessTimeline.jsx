@@ -96,7 +96,7 @@ const ProcessTimeline = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3
+        staggerChildren: 0.15
       }
     }
   };
@@ -104,33 +104,29 @@ const ProcessTimeline = () => {
   const stepVariants = {
     hidden: { 
       opacity: 0,
-      x: -100,
-      scale: 0.8
+      y: 20
     },
     visible: { 
       opacity: 1,
-      x: 0,
-      scale: 1,
+      y: 0,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
+        duration: 0.5,
+        ease: "easeOut"
       }
     }
   };
 
   const numberVariants = {
     hidden: { 
-      scale: 0,
-      rotate: -180
+      scale: 0.8,
+      opacity: 0
     },
     visible: { 
       scale: 1,
-      rotate: 0,
+      opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 15
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };
@@ -138,17 +134,14 @@ const ProcessTimeline = () => {
   const contentVariants = {
     hidden: { 
       opacity: 0,
-      x: 50,
-      scaleX: 0.5
+      y: 10
     },
     visible: { 
       opacity: 1,
-      x: 0,
-      scaleX: 1,
+      y: 0,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };
