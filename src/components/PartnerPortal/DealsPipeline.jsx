@@ -12,28 +12,26 @@ const PipelineContainer = styled.div`
 
 const StagesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
   background: ${props => props.theme.colors.primary};
-  padding: 2rem;
-  border-radius: 12px;
+  padding: 1.5rem;
+  border-radius: 8px;
   margin-bottom: 2rem;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
 `;
 
 const StageColumn = styled(motion.div)`
   background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  min-height: 250px;
+  padding: 1.2rem;
+  border-radius: 8px;
+  min-height: 200px;
   cursor: ${props => props.clickable ? 'pointer' : 'default'};
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
   &:hover {
     ${props => props.clickable && `
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     `}
   }
 `;
@@ -99,14 +97,13 @@ const DealCount = styled.span`
 
 const DealCard = styled.div`
   background: ${props => props.theme.colors.lightGray};
-  padding: 1.2rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
   transition: all 0.2s ease;
 
   &:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateX(3px);
   }
 `;
 
