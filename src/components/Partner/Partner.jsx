@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaHandshake, FaMoneyBillWave, FaChartLine, FaClock, FaHeadset, FaBullhorn } from 'react-icons/fa';
+import { supabase } from '../../utils/supabaseClient';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -121,6 +122,24 @@ const SubmitButton = styled(motion.button)`
   }
 `;
 
+const SuccessMessage = styled(motion.div)`
+  background: #d4edda;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
+
+const ErrorMessage = styled(motion.div)`
+  background: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
+
 const benefits = [
   {
     icon: <FaMoneyBillWave />,
@@ -155,9 +174,58 @@ const benefits = [
 ];
 
 const Partner = () => {
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    companyName: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const { data, error: submitError } = await supabase
+        .from('partner_applications')
+        .insert([
+          {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            phone: formData.phone,
+            company_name: formData.companyName
+          }
+        ]);
+
+      if (submitError) throw submitError;
+
+      setSuccess(true);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        companyName: ''
+      });
+    } catch (err) {
+      setError('There was an error submitting your application. Please try again.');
+      console.error('Error:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -187,28 +255,88 @@ const Partner = () => {
         </BenefitsGrid>
 
         <ContactForm onSubmit={handleSubmit}>
+          {success && (
+            <SuccessMessage
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Thank you for your application! We'll be in touch soon.
+            </SuccessMessage>
+          )}
+
+          {error && (
+            <ErrorMessage
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {error}
+            </ErrorMessage>
+          )}
+
           <FormGroup>
-            <Label htmlFor="name">Full Name</Label>
-            <Input type="text" id="name" required />
+            <Label htmlFor="firstName">First Name</Label>
+            <Input 
+              type="text" 
+              id="firstName" 
+              value={formData.firstName}
+              onChange={handleChange}
+              required 
+            />
           </FormGroup>
+
+          <FormGroup>
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input 
+              type="text" 
+              id="lastName" 
+              value={formData.lastName}
+              onChange={handleChange}
+              required 
+            />
+          </FormGroup>
+
           <FormGroup>
             <Label htmlFor="email">Email Address</Label>
-            <Input type="email" id="email" required />
+            <Input 
+              type="email" 
+              id="email" 
+              value={formData.email}
+              onChange={handleChange}
+              required 
+            />
           </FormGroup>
+
           <FormGroup>
             <Label htmlFor="phone">Phone Number</Label>
-            <Input type="tel" id="phone" required />
+            <Input 
+              type="tel" 
+              id="phone" 
+              value={formData.phone}
+              onChange={handleChange}
+              required 
+            />
           </FormGroup>
+
           <FormGroup>
-            <Label htmlFor="company">Company Name</Label>
-            <Input type="text" id="company" required />
+            <Label htmlFor="companyName">Company Name</Label>
+            <Input 
+              type="text" 
+              id="companyName" 
+              value={formData.companyName}
+              onChange={handleChange}
+              required 
+            />
           </FormGroup>
+
           <SubmitButton
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            disabled={isSubmitting}
           >
-            Submit Partner Application
+            {isSubmitting ? 'Submitting...' : 'Submit Partner Application'}
           </SubmitButton>
         </ContactForm>
       </Container>
