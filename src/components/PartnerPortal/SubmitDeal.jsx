@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { supabase } from '../../utils/supabaseClient';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency, parseCurrency } from '../../utils/formatters';
-import { FaCloudUploadAlt } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaCheckCircle } from 'react-icons/fa';
 import LoadingOverlay from '../shared/LoadingOverlay';
 import { useNavigate } from 'react-router-dom';
 
@@ -106,7 +106,7 @@ const ErrorMessage = styled.div`
   font-size: 0.9rem;
 `;
 
-const SuccessMessage = styled.div`
+const SubmitSuccessMessage = styled.div`
   color: green;
   margin-top: 0.5rem;
   font-size: 0.9rem;
@@ -193,6 +193,47 @@ const Checkbox = styled.input`
   height: 1rem;
 `;
 
+const SuccessOverlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const SuccessCard = styled(motion.div)`
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+`;
+
+const SuccessIcon = styled(FaCheckCircle)`
+  font-size: 4rem;
+  color: #28a745;
+  margin-bottom: 1.5rem;
+`;
+
+const SuccessTitle = styled.h2`
+  color: ${props => props.theme.colors.primary};
+  font-size: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const SuccessMessage = styled.p`
+  color: ${props => props.theme.colors.text};
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+`;
+
 const initialFormState = {
   businessName: '',
   firstName: '',
@@ -217,6 +258,7 @@ const SubmitDeal = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -271,12 +313,14 @@ const SubmitDeal = () => {
 
       if (submitError) throw submitError;
 
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      setShowSuccess(true);
       
-      setSuccess(true);
       setFormData(initialFormState);
       
-      navigate('/partner-dashboard');
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate('/partner-dashboard');
+      }, 3000);
 
     } catch (err) {
       console.error('Error:', err);
@@ -289,13 +333,37 @@ const SubmitDeal = () => {
   return (
     <Container>
       {isSubmitting && <LoadingOverlay />}
+      
+      <AnimatePresence>
+        {showSuccess && (
+          <SuccessOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <SuccessCard
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+            >
+              <SuccessIcon />
+              <SuccessTitle>Deal Submitted Successfully!</SuccessTitle>
+              <SuccessMessage>
+                Your deal has been submitted and will be reviewed by our team. 
+                You will be redirected to your dashboard shortly.
+              </SuccessMessage>
+            </SuccessCard>
+          </SuccessOverlay>
+        )}
+      </AnimatePresence>
+
       <Form onSubmit={handleSubmit}>
         <Title>Submit New Deal</Title>
 
         {success && (
-          <SuccessMessage>
+          <SubmitSuccessMessage>
             Deal submitted successfully!
-          </SuccessMessage>
+          </SubmitSuccessMessage>
         )}
 
         {error && (
