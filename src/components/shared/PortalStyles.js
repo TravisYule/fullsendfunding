@@ -11,9 +11,7 @@ export const Section = styled.section`
   background: ${props => props.theme.colors.lightGray};
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: calc(${props => props.theme.ios.topInset} + 1rem) 1rem;
-    padding-bottom: ${props => props.theme.ios.bottomInset};
-    min-height: -webkit-fill-available;
+    padding: 6rem 1rem 2rem 1rem;
   }
 `;
 
@@ -28,11 +26,8 @@ export const LoginContainer = styled(motion.div)`
   margin: 0 1rem;
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    margin: 0 1rem;
+    margin: 0;
     padding: 1.5rem;
-    border-radius: ${props => props.theme.ios.borderRadius};
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05),
-                0 0 1px rgba(0,0,0,0.1);
   }
 `;
 
@@ -77,15 +72,10 @@ export const Input = styled.input`
   box-sizing: border-box;
 
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    height: ${props => props.theme.ios.inputHeight};
-    font-size: ${props => props.theme.ios.fontSize};
-    border-radius: ${props => props.theme.ios.borderRadius};
+    font-size: 16px;
+    height: 44px;
     -webkit-appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    padding: 0 1rem 0 2.5rem;
-    
-    box-shadow: none;
-    -webkit-box-shadow: none;
+    border-radius: 8px;
   }
 
   &:focus {
@@ -113,6 +103,12 @@ export const Button = styled(motion.button)`
   cursor: pointer;
   transition: all 0.3s ease;
 
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    height: 44px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+  }
+
   &:hover {
     background: ${props => props.theme.colors.primary};
   }
@@ -120,18 +116,6 @@ export const Button = styled(motion.button)`
   &:disabled {
     background: #ccc;
     cursor: not-allowed;
-  }
-
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    height: ${props => props.theme.ios.inputHeight};
-    border-radius: ${props => props.theme.ios.borderRadius};
-    font-weight: 600;
-    -webkit-tap-highlight-color: transparent;
-    
-    &:active {
-      opacity: ${props => props.theme.ios.tapState.opacity};
-      transition: opacity ${props => props.theme.ios.tapState.duration};
-    }
   }
 `;
 
