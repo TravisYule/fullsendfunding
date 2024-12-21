@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, animate } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaStar, FaDollarSign, FaAward, FaShieldAlt } from 'react-icons/fa';
 
@@ -71,11 +71,16 @@ const AnimatedNumber = ({ value }) => {
   return (
     <motion.span
       ref={ref}
-      initial={{ count: 0 }}
-      animate={inView ? { count: value } : { count: 0 }}
-      transition={{ duration: 2, type: "spring", bounce: 0 }}
+      initial={{ opacity: 1 }}
+      animate={inView ? { opacity: 1 } : { opacity: 1 }}
     >
-      {({ count }) => Math.round(count)}
+      <motion.span
+        initial={{ count: 0 }}
+        animate={{ count: value }}
+        transition={{ duration: 2 }}
+      >
+        {({ count }) => `${Math.floor(count)}`}
+      </motion.span>
     </motion.span>
   );
 };
@@ -92,7 +97,9 @@ const AccoladeBanner = () => {
 
         <AccoladeItem>
           <Icon><FaDollarSign /></Icon>
-          <Title><AnimatedNumber value={100} /> Million</Title>
+          <Title>
+            <AnimatedNumber value={100} /> Million
+          </Title>
           <Subtitle>Delivered to small businesses</Subtitle>
         </AccoladeItem>
 
