@@ -7,6 +7,9 @@ const PipelineContainer = styled.div`
   background: ${props => props.theme.colors.primary};
   padding: 2rem;
   border-radius: 12px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const StagesGrid = styled.div`

@@ -8,6 +8,13 @@ const FooterContainer = styled.footer`
   background: ${props => props.theme.colors.primary};
   color: white;
   padding: 4rem 2rem 2rem;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  box-sizing: border-box;
 `;
 
 const FooterContent = styled.div`
