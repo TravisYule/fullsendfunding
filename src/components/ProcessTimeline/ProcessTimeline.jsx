@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -72,7 +71,7 @@ const StepNumber = styled(motion.div)`
   box-shadow: 0 4px 12px rgba(255, 75, 75, 0.2);
 `;
 
-const StepContent = styled(motion.div)`
+const StepContent = styled.div`
   flex: 1;
   padding-top: 0.5rem;
 `;
@@ -89,63 +88,6 @@ const StepDescription = styled.p`
 `;
 
 const ProcessTimeline = () => {
-  const [ref, controls] = useReanimateOnScroll(0.2);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const stepVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 20
-    },
-    visible: { 
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const numberVariants = {
-    hidden: { 
-      scale: 0.8,
-      opacity: 0
-    },
-    visible: { 
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const contentVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 10
-    },
-    visible: { 
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut"
-      }
-    }
-  };
-
   const steps = [
     {
       number: "1",
@@ -173,18 +115,24 @@ const ProcessTimeline = () => {
     <Section>
       <Container>
         <Title>How It Works</Title>
-        <Timeline
-          ref={ref}
-          animate={controls}
-          initial="hidden"
-          variants={containerVariants}
-        >
+        <Timeline>
           {steps.map((step, index) => (
-            <Step key={step.number} variants={stepVariants}>
-              <StepNumber variants={numberVariants}>
+            <Step
+              key={step.number}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+            >
+              <StepNumber
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 + 0.2 }}
+              >
                 {step.number}
               </StepNumber>
-              <StepContent variants={contentVariants}>
+              <StepContent>
                 <StepTitle>{step.title}</StepTitle>
                 <StepDescription>{step.description}</StepDescription>
               </StepContent>
