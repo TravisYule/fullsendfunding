@@ -4,36 +4,24 @@ import { supabase } from '../../utils/supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const PipelineContainer = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.primary};
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 `;
 
 const StagesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1rem;
-  background: ${props => props.theme.colors.primary};
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
+  padding: 1rem;
 `;
 
 const StageColumn = styled(motion.div)`
   background: white;
-  padding: 1.2rem;
+  padding: 1rem;
   border-radius: 8px;
   min-height: 200px;
   cursor: ${props => props.clickable ? 'pointer' : 'default'};
-  transition: all 0.3s ease;
-
-  &:hover {
-    ${props => props.clickable && `
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    `}
-  }
 `;
 
 const StageView = styled(motion.div)`
@@ -71,28 +59,29 @@ const DealsGrid = styled.div`
 
 const StageHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid ${props => props.theme.colors.lightGray};
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 const StageTitle = styled.h3`
   color: ${props => props.theme.colors.primary};
   margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 const DealCount = styled.span`
   background: ${props => props.theme.colors.secondary};
   color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(255,75,75,0.2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DealCard = styled.div`
