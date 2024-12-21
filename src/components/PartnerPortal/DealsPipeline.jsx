@@ -6,32 +6,34 @@ import { motion, AnimatePresence } from 'framer-motion';
 const PipelineContainer = styled.div`
   background: white;
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 `;
 
 const StagesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1.5rem;
   background: ${props => props.theme.colors.primary};
-  padding: 1.5rem;
-  border-radius: 8px;
+  padding: 2rem;
+  border-radius: 12px;
   margin-bottom: 2rem;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
 `;
 
 const StageColumn = styled(motion.div)`
   background: white;
-  padding: 1rem;
-  border-radius: 6px;
-  min-height: 200px;
+  padding: 1.5rem;
+  border-radius: 10px;
+  min-height: 250px;
   cursor: ${props => props.clickable ? 'pointer' : 'default'};
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
   &:hover {
     ${props => props.clickable && `
       transform: translateY(-5px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
     `}
   }
 `;
@@ -73,50 +75,73 @@ const StageHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid ${props => props.theme.colors.primary};
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid ${props => props.theme.colors.lightGray};
 `;
 
 const StageTitle = styled.h3`
   color: ${props => props.theme.colors.primary};
   margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
 `;
 
 const DealCount = styled.span`
   background: ${props => props.theme.colors.secondary};
   color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(255,75,75,0.2);
 `;
 
 const DealCard = styled.div`
-  background: white;
-  padding: 1rem;
-  border-radius: 4px;
+  background: ${props => props.theme.colors.lightGray};
+  padding: 1.2rem;
+  border-radius: 8px;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
 
   &:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 `;
 
 const BusinessName = styled.div`
-  font-weight: bold;
+  font-weight: 600;
   color: ${props => props.theme.colors.primary};
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
 `;
 
 const DealAmount = styled.div`
   color: ${props => props.theme.colors.secondary};
-  font-weight: bold;
-  margin: 0.5rem 0;
+  font-weight: 600;
+  margin: 0.75rem 0;
+  font-size: 1.2rem;
 `;
 
 const DealInfo = styled.div`
   font-size: 0.9rem;
   color: #666;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+`;
+
+const MoreDealsIndicator = styled.div`
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: ${props => props.theme.colors.lightGray};
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: ${props => props.theme.colors.primary};
+  font-weight: 500;
 `;
 
 const stages = [
@@ -214,9 +239,9 @@ const DealsPipeline = () => {
                   </DealCard>
                 ))}
                 {getDealsByStage(stage).length > 3 && (
-                  <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-                    +{getDealsByStage(stage).length - 3} more
-                  </div>
+                  <MoreDealsIndicator>
+                    +{getDealsByStage(stage).length - 3} more deals
+                  </MoreDealsIndicator>
                 )}
               </StageColumn>
             ))}
