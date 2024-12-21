@@ -23,6 +23,7 @@ import FundingCalculator from './components/Calculator/FundingCalculator';
 import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from './components/Auth/ResetPassword';
 import ThankYou from './components/ThankYou/ThankYou';
+import CreateAccount from './components/Auth/CreateAccount';
 
 const MainContent = styled.main`
   padding-top: 118px;
@@ -111,6 +112,8 @@ function App() {
               <ResetPassword />
             </Suspense>
           } />
+
+          <Route path="/create-account/:type" element={<CreateAccount />} />
         </Routes>
       </MainContent>
       <AccoladeBanner />
