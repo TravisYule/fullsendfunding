@@ -6,7 +6,7 @@ export const useReanimateOnScroll = (threshold = 0.2) => {
   const controls = useAnimation();
   const [ref, inView] = useInView({
     threshold,
-    triggerOnce: false // This allows re-triggering
+    triggerOnce: false // This is important - set to false to allow re-animation
   });
 
   useEffect(() => {

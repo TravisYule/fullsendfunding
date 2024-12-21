@@ -184,8 +184,8 @@ const iconVariants = {
 };
 
 const HowItWorks = () => {
-  const [ref1, controls1] = useReanimateOnScroll();
-  const [ref2, controls2] = useReanimateOnScroll();
+  const [ref1, controls1] = useReanimateOnScroll(0.2);
+  const [ref2, controls2] = useReanimateOnScroll(0.2);
 
   return (
     <Section>
@@ -194,7 +194,7 @@ const HowItWorks = () => {
           as={motion.div}
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
           transition={{ duration: 0.6 }}
         >
           <Title>How It Works</Title>
@@ -205,7 +205,7 @@ const HowItWorks = () => {
             as={motion.h2}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             transition={{ duration: 0.5 }}
           >
             Why Choose Full Send Funding
