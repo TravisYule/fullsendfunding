@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 
 const sizes = {
-  favicon: 1024,
+  favicon: 2048,
   apple: 180,
   favicon32: 32,
   favicon16: 16
@@ -13,15 +13,18 @@ async function generateFavicons() {
   const outputDir = path.join(__dirname, '../public');
 
   try {
-    // Generate main favicon (1024x1024) with optimized settings
+    // Generate main favicon (2048x2048) with maximum quality
     await sharp(inputPath)
       .resize(sizes.favicon, sizes.favicon, {
         fit: 'contain',
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
+        withoutEnlargement: false
       })
+      .sharpen()
       .png({
         quality: 100,
-        compressionLevel: 9
+        compressionLevel: 0,
+        force: true
       })
       .toFile(path.join(outputDir, 'favicon.png'));
 
