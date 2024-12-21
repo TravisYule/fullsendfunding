@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { formatCurrency, parseCurrency } from '../../utils/formatters';
+import LoadingOverlay from '../shared/LoadingOverlay';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -291,16 +292,11 @@ const ApplicationForm = () => {
 
       if (error) throw error;
 
-      setSubmitSuccess(true);
-      // Clear form data
-      setFormData(initialFormState);
-      // Clear localStorage
-      localStorage.removeItem('applicationData');
-
-      // Show success message and redirect after delay
-      setTimeout(() => {
-        navigate('/thank-you');
-      }, 3000);
+      // Show loading for at least 1.5 seconds
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Navigate to thank you page
+      navigate('/thank-you', { replace: true });
 
     } catch (error) {
       console.error('Error submitting application:', error);
@@ -329,6 +325,7 @@ const ApplicationForm = () => {
 
   return (
     <Section>
+      {isSubmitting && <LoadingOverlay />}
       <Container>
         <Header>
           <Title>Apply for Funding</Title>
