@@ -248,9 +248,9 @@ const HowItWorks = () => {
         <InfoSection
           ref={ref2}
           as={motion.div}
-          initial={{ opacity: 0, x: -100 }}
+          variants={containerVariants}
+          initial="hidden"
           animate={controls2}
-          transition={{ duration: 0.8, type: "spring" }}
         >
           <InfoTitle>What is Alternative Business Funding?</InfoTitle>
           <InfoText>
