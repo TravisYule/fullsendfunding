@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion, animate } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaStar, FaDollarSign, FaAward, FaShieldAlt } from 'react-icons/fa';
 
@@ -63,26 +63,36 @@ const Subtitle = styled.div`
 `;
 
 const AnimatedNumber = ({ value }) => {
+  const [count, setCount] = useState(0);
   const [ref, inView] = useInView({
     triggerOnce: false,
     threshold: 0.1
   });
 
-  return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 1 }}
-      animate={inView ? { opacity: 1 } : { opacity: 1 }}
-    >
-      <motion.span
-        initial={{ count: 0 }}
-        animate={{ count: value }}
-        transition={{ duration: 2 }}
-      >
-        {({ count }) => `${Math.floor(count)}`}
-      </motion.span>
-    </motion.span>
-  );
+  useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const end = value;
+      const duration = 2000; // 2 seconds
+      const increment = end / (duration / 16); // 60fps
+
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, 16);
+
+      return () => clearInterval(timer);
+    } else {
+      setCount(0);
+    }
+  }, [value, inView]);
+
+  return <span ref={ref}>{count}</span>;
 };
 
 const AccoladeBanner = () => {
