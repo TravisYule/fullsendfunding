@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { supabase } from '../../utils/supabaseClient';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaCloudUploadAlt } from 'react-icons/fa';
@@ -211,6 +213,10 @@ const initialFormState = {
 };
 
 const ApplicationForm = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [partnerId, setPartnerId] = useState(null);
+
   const [formData, setFormData] = useState(() => {
     // Try to get stored data
     const storedData = localStorage.getItem('applicationData');
@@ -232,6 +238,17 @@ const ApplicationForm = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isAgreed, setIsAgreed] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  useEffect(() => {
+    // Check for partner ID in URL params
+    const params = new URLSearchParams(location.search);
+    const pid = params.get('pid');
+    if (pid) {
+      setPartnerId(pid);
+    }
+  }, [location]);
 
   const handleChange = (e) => {
     setFormData({
@@ -240,11 +257,55 @@ const ApplicationForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // For now, just log the form data
-    console.log('Form Data:', formData);
-    console.log('Files:', files);
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      // Format the data for Supabase
+      const applicationData = {
+        business_name: formData.businessName,
+        owner_name: formData.ownerName,
+        date_of_birth: formData.dateOfBirth,
+        ssn: formData.socialSecurityNumber,
+        email: formData.email,
+        phone: formData.phone,
+        monthly_revenue: parseCurrency(formData.monthlyRevenue),
+        funding_amount: formData.fundingAmount,
+        industry: formData.industry,
+        time_in_business: formData.timeInBusiness,
+        ein: formData.ein,
+        partner_id: partnerId,
+        source: partnerId ? 'partner' : 'direct',
+        status: 'Intake'
+      };
+
+      const { data, error } = await supabase
+        .from('applications')
+        .insert([applicationData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      // Clear form data
+      setFormData(initialFormState);
+      // Clear localStorage
+      localStorage.removeItem('applicationData');
+
+      // Show success message and redirect after delay
+      setTimeout(() => {
+        navigate('/thank-you');
+      }, 3000);
+
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      setSubmitError('There was an error submitting your application. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -275,6 +336,16 @@ const ApplicationForm = () => {
         </Header>
 
         <Form onSubmit={handleSubmit}>
+          {submitSuccess && (
+            <SuccessMessage>
+              Application submitted successfully! You will be redirected shortly...
+            </SuccessMessage>
+          )}
+
+          {submitError && (
+            <ErrorMessage>{submitError}</ErrorMessage>
+          )}
+
           <FormGroup>
             <Label htmlFor="businessName">Business Name</Label>
             <Input
@@ -482,14 +553,33 @@ const ApplicationForm = () => {
             type="submit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            disabled={!isAgreed}
+            disabled={!isAgreed || isSubmitting}
           >
-            Submit Application
+            {isSubmitting ? 'Submitting...' : 'Submit Application'}
           </SubmitButton>
         </Form>
       </Container>
     </Section>
   );
 };
+
+// Add styled components for success/error messages
+const SuccessMessage = styled(motion.div)`
+  background: #d4edda;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
+
+const ErrorMessage = styled(motion.div)`
+  background: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
 
 export default ApplicationForm; 
