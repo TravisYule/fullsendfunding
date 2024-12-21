@@ -137,8 +137,7 @@ const stages = [
   'Declined',
   'Resubmit',
   'Approved',
-  'Docs Out',
-  'Funded'
+  'Docs Out'
 ];
 
 const DealsPipeline = () => {
