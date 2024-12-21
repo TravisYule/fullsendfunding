@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 
 const sizes = {
-  favicon: 256,
+  favicon: 768,
   apple: 180,
   favicon32: 32,
   favicon16: 16
@@ -13,7 +13,7 @@ async function generateFavicons() {
   const outputDir = path.join(__dirname, '../public');
 
   try {
-    // Generate main favicon (256x256)
+    // Generate main favicon (768x768)
     await sharp(inputPath)
       .resize(sizes.favicon, sizes.favicon)
       .png()
