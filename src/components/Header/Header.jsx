@@ -34,7 +34,7 @@ const TopBar = styled.div`
   z-index: 1001;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.25rem 0;
+    padding: 0.5rem;
     font-size: 0.75rem;
   }
 `;
@@ -111,7 +111,7 @@ const LogoImage = styled.img`
   width: auto;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    height: 60px;
+    height: 50px;
   }
 `;
 
@@ -298,17 +298,16 @@ const MobileApplyButton = styled(Link)`
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     display: block;
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
     background: ${props => props.theme.colors.secondary};
     color: white;
     text-align: center;
-    padding: 0.75rem;
+    padding: 1rem;
     font-weight: 600;
-    text-decoration: none;
-    z-index: 1002;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
   }
 `;
 
