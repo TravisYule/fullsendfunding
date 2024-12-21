@@ -73,7 +73,7 @@ const AnimatedNumber = ({ value }) => {
     if (inView) {
       let start = 0;
       const end = value;
-      const duration = 2000; // 2 seconds
+      const duration = 3000; // Changed from 2000 to 3000 (3 seconds)
       let startTime = null;
 
       const easeOutQuart = t => 1 - Math.pow(1 - t, 4); // Easing function
