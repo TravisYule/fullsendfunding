@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 
 const sizes = {
-  favicon: 768,
+  favicon: 1024,
   apple: 180,
   favicon32: 32,
   favicon16: 16
@@ -13,10 +13,16 @@ async function generateFavicons() {
   const outputDir = path.join(__dirname, '../public');
 
   try {
-    // Generate main favicon (768x768)
+    // Generate main favicon (1024x1024) with optimized settings
     await sharp(inputPath)
-      .resize(sizes.favicon, sizes.favicon)
-      .png()
+      .resize(sizes.favicon, sizes.favicon, {
+        fit: 'contain',
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
+      })
+      .png({
+        quality: 100,
+        compressionLevel: 9
+      })
       .toFile(path.join(outputDir, 'favicon.png'));
 
     // Generate Apple Touch Icon (180x180)
