@@ -15,7 +15,8 @@ const HeroContainer = styled.div`
   overflow: hidden;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 2rem 1rem;
+    padding: 1rem;
+    min-height: auto;
     text-align: center;
   }
 `;
@@ -47,12 +48,31 @@ const HeroText = styled(motion.div)`
     opacity: 0.9;
     line-height: 1.6;
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    
+    p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  }
 `;
 
 const FeaturesList = styled(motion.ul)`
   list-style: none;
   padding: 0;
   margin: 2rem 0;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    margin: 1.5rem 0;
+    text-align: left;
+    padding: 0 1rem;
+  }
 `;
 
 const FeatureItem = styled(motion.li)`
@@ -65,6 +85,16 @@ const FeatureItem = styled(motion.li)`
     margin-right: 1rem;
     color: ${props => props.theme.colors.secondary};
   }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    
+    svg {
+      font-size: 1.2rem;
+      min-width: 24px;
+    }
+  }
 `;
 
 const QuickForm = styled(motion.div)`
@@ -74,6 +104,12 @@ const QuickForm = styled(motion.div)`
   color: ${props => props.theme.colors.text};
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(8px);
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 1.5rem;
+    margin: 0 -1rem;
+    border-radius: 8px;
+  }
 `;
 
 const TrustIndicators = styled(motion.div)`
@@ -85,8 +121,13 @@ const TrustIndicators = styled(motion.div)`
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     flex-direction: column;
-    gap: 1rem;
-    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    
+    svg {
+      font-size: 1rem;
+    }
   }
 `;
 
