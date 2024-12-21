@@ -55,13 +55,16 @@ const DealCount = styled.span`
 
 const DealCard = styled.div`
   background: ${props => props.theme.colors.lightGray};
-  padding: 1rem;
+  padding: 1.2rem;
   border-radius: 6px;
   margin-bottom: 0.8rem;
+  cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    transform: translateX(3px);
+    transform: translateX(5px);
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 `;
 
@@ -105,10 +108,66 @@ const stages = [
   'Docs Out'
 ];
 
+const DealModal = styled(motion.div)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+`;
+
+const ModalOverlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: ${props => props.theme.colors.primary};
+`;
+
+const DetailRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid ${props => props.theme.colors.lightGray};
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const DetailLabel = styled.span`
+  color: ${props => props.theme.colors.text};
+  font-weight: 500;
+`;
+
+const DetailValue = styled.span`
+  color: ${props => props.theme.colors.primary};
+`;
+
 const DealsPipeline = () => {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStage, setSelectedStage] = useState(null);
+  const [selectedDeal, setSelectedDeal] = useState(null);
 
   useEffect(() => {
     fetchDeals();
@@ -142,6 +201,11 @@ const DealsPipeline = () => {
       style: 'currency',
       currency: 'USD'
     }).format(amount);
+  };
+
+  const handleDealClick = (e, deal) => {
+    e.stopPropagation();
+    setSelectedDeal(deal);
   };
 
   if (loading) {
@@ -178,7 +242,10 @@ const DealsPipeline = () => {
                     transition={{ duration: 0.3 }}
                   >
                     {stageDeals.map(deal => (
-                      <DealCard key={deal.id}>
+                      <DealCard 
+                        key={deal.id}
+                        onClick={(e) => handleDealClick(e, deal)}
+                      >
                         <BusinessName>{deal.business_name}</BusinessName>
                         <DealAmount>
                           <span>Requested: </span>
@@ -197,6 +264,63 @@ const DealsPipeline = () => {
           );
         })}
       </StagesGrid>
+
+      <AnimatePresence>
+        {selectedDeal && (
+          <>
+            <ModalOverlay
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedDeal(null)}
+            />
+            <DealModal
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+            >
+              <CloseButton onClick={() => setSelectedDeal(null)}>&times;</CloseButton>
+              <h2>{selectedDeal.business_name}</h2>
+              <DetailRow>
+                <DetailLabel>Client Name</DetailLabel>
+                <DetailValue>{selectedDeal.first_name} {selectedDeal.last_name}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Requested Amount</DetailLabel>
+                <DetailValue>{formatCurrency(selectedDeal.amount)}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Email</DetailLabel>
+                <DetailValue>{selectedDeal.email}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Phone</DetailLabel>
+                <DetailValue>{selectedDeal.phone}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Industry</DetailLabel>
+                <DetailValue>{selectedDeal.industry}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Time in Business</DetailLabel>
+                <DetailValue>{selectedDeal.time_in_business}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Monthly Revenue</DetailLabel>
+                <DetailValue>{formatCurrency(selectedDeal.monthly_revenue)}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Status</DetailLabel>
+                <DetailValue>{selectedDeal.status}</DetailValue>
+              </DetailRow>
+              <DetailRow>
+                <DetailLabel>Submitted</DetailLabel>
+                <DetailValue>{new Date(selectedDeal.created_at).toLocaleDateString()}</DetailValue>
+              </DetailRow>
+            </DealModal>
+          </>
+        )}
+      </AnimatePresence>
     </PipelineContainer>
   );
 };
