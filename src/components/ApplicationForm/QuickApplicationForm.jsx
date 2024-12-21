@@ -5,10 +5,14 @@ import { formatCurrency, parseCurrency } from '../../utils/formatters';
 import { useNavigate } from 'react-router-dom';
 import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 `;
 
 const FormTitle = styled.h3`
@@ -137,7 +141,7 @@ const QuickApplicationForm = () => {
   };
 
   return (
-    <FormContainer
+    <Form
       ref={ref}
       animate={controls}
       initial="hidden"
@@ -230,7 +234,7 @@ const QuickApplicationForm = () => {
       >
         Get Funded Now
       </SubmitButton>
-    </FormContainer>
+    </Form>
   );
 };
 
