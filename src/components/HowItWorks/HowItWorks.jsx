@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaDollarSign, FaFileAlt, FaClock, FaShieldAlt, FaThumbsUp, FaAward } from 'react-icons/fa';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -140,86 +141,117 @@ const ApplyButton = styled(motion.a)`
   }
 `;
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { 
+    opacity: 0,
+    y: 50,
+    scale: 0.9
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15
+    }
+  }
+};
+
+const iconVariants = {
+  hidden: { scale: 0, rotate: -180 },
+  visible: { 
+    scale: 1, 
+    rotate: 0,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 20
+    }
+  }
+};
+
 const HowItWorks = () => {
+  const [ref1, controls1] = useReanimateOnScroll();
+  const [ref2, controls2] = useReanimateOnScroll();
+
   return (
     <Section>
       <Container>
-        <Header>
+        <Header
+          as={motion.div}
+          initial={{ opacity: 0, y: -50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <Title>How It Works</Title>
         </Header>
 
         <ProcessSection>
-          <ProcessTitle>Why Choose Full Send Funding</ProcessTitle>
-          <BenefitsGrid>
-            <BenefitCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <Icon><FaFileAlt /></Icon>
-              <BenefitTitle>No Application Fee</BenefitTitle>
-              <BenefitText>Free application process with no hidden fees or obligations</BenefitText>
-            </BenefitCard>
-
-            <BenefitCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <Icon><FaDollarSign /></Icon>
-              <BenefitTitle>Transparent</BenefitTitle>
-              <BenefitText>Clear terms and conditions with no hidden costs</BenefitText>
-            </BenefitCard>
-
-            <BenefitCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Icon><FaClock /></Icon>
-              <BenefitTitle>Approved in Less than 24 Hours</BenefitTitle>
-              <BenefitText>Quick approval process with same-day funding available</BenefitText>
-            </BenefitCard>
-
-            <BenefitCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <Icon><FaShieldAlt /></Icon>
-              <BenefitTitle>Secure</BenefitTitle>
-              <BenefitText>Bank-level security protecting your information</BenefitText>
-            </BenefitCard>
-
-            <BenefitCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <Icon><FaThumbsUp /></Icon>
-              <BenefitTitle>Bad Credit Ok</BenefitTitle>
-              <BenefitText>We focus on your business performance, not your credit score</BenefitText>
-            </BenefitCard>
-
-            <BenefitCard
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <Icon><FaAward /></Icon>
-              <BenefitTitle>A+ Rating</BenefitTitle>
-              <BenefitText>Excellent reputation with the Better Business Bureau</BenefitText>
-            </BenefitCard>
+          <ProcessTitle
+            as={motion.h2}
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            Why Choose Full Send Funding
+          </ProcessTitle>
+          
+          <BenefitsGrid
+            ref={ref1}
+            as={motion.div}
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls1}
+          >
+            {[
+              { icon: <FaFileAlt />, title: "No Application Fee", text: "Free application process with no hidden fees or obligations" },
+              { icon: <FaDollarSign />, title: "Transparent", text: "Clear terms and conditions with no hidden costs" },
+              { icon: <FaClock />, title: "Approved in Less than 24 Hours", text: "Quick approval process with same-day funding available" },
+              { icon: <FaShieldAlt />, title: "Secure", text: "Bank-level security protecting your information" },
+              { icon: <FaThumbsUp />, title: "Bad Credit Ok", text: "We focus on your business performance, not your credit score" },
+              { icon: <FaAward />, title: "A+ Rating", text: "Excellent reputation with the Better Business Bureau" }
+            ].map((benefit, index) => (
+              <BenefitCard
+                key={index}
+                variants={cardVariants}
+                whileHover={{
+                  scale: 1.05,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Icon as={motion.div} variants={iconVariants}>
+                  {benefit.icon}
+                </Icon>
+                <BenefitTitle>{benefit.title}</BenefitTitle>
+                <BenefitText>{benefit.text}</BenefitText>
+              </BenefitCard>
+            ))}
           </BenefitsGrid>
         </ProcessSection>
 
-        <InfoSection>
+        <InfoSection
+          ref={ref2}
+          as={motion.div}
+          initial={{ opacity: 0, x: -100 }}
+          animate={controls2}
+          transition={{ duration: 0.8, type: "spring" }}
+        >
           <InfoTitle>What is Alternative Business Funding?</InfoTitle>
           <InfoText>
             Full Send Funding wants to make sure you understand exactly the type of funding we provide. 
