@@ -97,8 +97,21 @@ const DealModal = styled(motion.div)`
 
 // Add safe formatting function
 const safeFormatCurrency = (value) => {
-  if (!value && value !== 0) return '$0';
-  return formatCurrency(value);
+  try {
+    if (!value && value !== 0) return '$0';
+    // Convert to number if it's a string
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    if (isNaN(numValue)) return '$0';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numValue);
+  } catch (error) {
+    console.error('Format error:', error, 'Value:', value);
+    return '$0';
+  }
 };
 
 const FundedDeals = () => {
@@ -118,10 +131,14 @@ const FundedDeals = () => {
         .from('applications')
         .select('*')
         .eq('partner_id', user.id)
-        .eq('status', 'Funded')  // Only get funded deals
+        .eq('status', 'Funded')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      
+      // Log the data to see what we're getting
+      console.log('Funded deals:', data);
+      
       setDeals(data || []);
     } catch (error) {
       console.error('Error fetching funded deals:', error);
@@ -130,26 +147,32 @@ const FundedDeals = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  // Add error boundary
+  if (!deals) return <div>No deals found</div>;
 
   return (
     <Container>
       <DealsGrid>
-        {deals.map(deal => (
-          <DealCard
-            key={deal.id}
-            onClick={() => setSelectedDeal(deal)}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <BusinessName>{deal.business_name}</BusinessName>
-            <DealAmount>{safeFormatCurrency(deal.amount)}</DealAmount>
-            <DealInfo>
-              <div>Client: {deal.first_name} {deal.last_name}</div>
-              <div>Funded: {new Date(deal.created_at).toLocaleDateString()}</div>
-            </DealInfo>
-          </DealCard>
-        ))}
+        {deals.map(deal => {
+          // Log each deal to see what we're trying to format
+          console.log('Processing deal:', deal);
+          
+          return (
+            <DealCard
+              key={deal.id}
+              onClick={() => setSelectedDeal(deal)}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <BusinessName>{deal.business_name || 'Unnamed Business'}</BusinessName>
+              <DealAmount>{safeFormatCurrency(deal.amount)}</DealAmount>
+              <DealInfo>
+                <div>Client: {deal.first_name} {deal.last_name}</div>
+                <div>Funded: {new Date(deal.created_at).toLocaleDateString()}</div>
+              </DealInfo>
+            </DealCard>
+          );
+        })}
       </DealsGrid>
 
       <AnimatePresence>
