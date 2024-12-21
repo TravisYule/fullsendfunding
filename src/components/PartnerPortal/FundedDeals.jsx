@@ -93,6 +93,48 @@ const DealModal = styled(motion.div)`
   }
 `;
 
+// Add these styled components
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: ${props => props.theme.colors.primary};
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const DetailRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid ${props => props.theme.colors.lightGray};
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const DetailLabel = styled.span`
+  color: ${props => props.theme.colors.text};
+  font-weight: 500;
+  font-size: 0.95rem;
+`;
+
+const DetailValue = styled.span`
+  color: ${props => props.theme.colors.primary};
+  font-weight: 600;
+  text-align: right;
+`;
+
 // ... other styled components from DealsPipeline ...
 
 // Add safe formatting function
