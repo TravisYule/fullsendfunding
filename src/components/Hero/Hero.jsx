@@ -6,15 +6,16 @@ import QuickApplicationForm from '../ApplicationForm/QuickApplicationForm';
 
 const HeroContainer = styled.div`
   background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.accent} 100%);
-  min-height: 80vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 4rem 2rem;
+  padding: 4rem 0;
   color: white;
   margin-top: -118px;
+  margin-bottom: -100px;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 2rem 1rem;
+    padding: 2rem 0;
     text-align: center;
   }
 `;
@@ -27,6 +28,7 @@ const Content = styled.div`
   gap: 4rem;
   position: relative;
   z-index: 2;
+  padding: 0 2rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
