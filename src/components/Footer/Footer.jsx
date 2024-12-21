@@ -7,19 +7,17 @@ import Logo from '../../assets/Logo.png';
 const FooterContainer = styled.footer`
   background: ${props => props.theme.colors.primary};
   color: white;
-  padding: 4rem 2rem 2rem;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
+  padding: 4rem 0 2rem;
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
   position: relative;
-  left: 50%;
-  right: 50%;
-  box-sizing: border-box;
 `;
 
 const FooterContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
