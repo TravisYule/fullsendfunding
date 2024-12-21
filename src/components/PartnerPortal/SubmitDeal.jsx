@@ -245,10 +245,10 @@ const SubmitDeal = () => {
       
       const amountValue = formData.fundingAmount.split('-')[0];
       
-      const dealData = {
+      const applicationData = {
         business_name: formData.businessName,
-        client_first_name: formData.firstName,
-        client_last_name: formData.lastName,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
         date_of_birth: formData.dateOfBirth,
         ssn: formData.socialSecurityNumber,
         email: formData.email,
@@ -261,12 +261,13 @@ const SubmitDeal = () => {
         ein: formData.ein,
         notes: formData.additionalNotes,
         partner_id: user.id,
+        source: 'partner',
         status: 'Intake'
       };
 
       const { error: submitError } = await supabase
-        .from('deals')
-        .insert([dealData]);
+        .from('applications')
+        .insert([applicationData]);
 
       if (submitError) throw submitError;
 

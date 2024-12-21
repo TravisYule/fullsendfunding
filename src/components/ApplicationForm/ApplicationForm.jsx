@@ -265,8 +265,7 @@ const ApplicationForm = () => {
     setSubmitError('');
 
     try {
-      // Format the data for Supabase
-      const applicationData = {
+      const submissionData = {
         business_name: formData.businessName,
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -275,6 +274,7 @@ const ApplicationForm = () => {
         email: formData.email,
         phone: formData.phone,
         monthly_revenue: parseCurrency(formData.monthlyRevenue),
+        amount: parseCurrency(formData.fundingAmount.split('-')[0]),
         funding_amount: formData.fundingAmount,
         industry: formData.industry,
         time_in_business: formData.timeInBusiness,
@@ -286,7 +286,7 @@ const ApplicationForm = () => {
 
       const { data, error } = await supabase
         .from('applications')
-        .insert([applicationData])
+        .insert([submissionData])
         .select()
         .single();
 

@@ -154,10 +154,10 @@ const DealsPipeline = () => {
       const { data: { user } } = await supabase.auth.getUser();
       
       const { data, error } = await supabase
-        .from('deals')
+        .from('applications')
         .select('*')
         .eq('partner_id', user.id)
-        .order('submitted_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       setDeals(data || []);
