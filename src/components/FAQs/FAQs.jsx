@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronDown } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -76,6 +77,10 @@ const Answer = styled(motion.div)`
   line-height: 1.6;
 `;
 
+const CTAButton = styled(Link)`
+  // ... existing styles ...
+`;
+
 const faqs = [
   {
     question: "What are the requirements to get funded?",
@@ -147,6 +152,11 @@ const FAQs = () => {
             </AnimatePresence>
           </FAQItem>
         ))}
+
+        <CTASection>
+          <h3>Ready to get started?</h3>
+          <CTAButton to="/apply">Apply Now</CTAButton>
+        </CTASection>
       </Container>
     </Section>
   );
