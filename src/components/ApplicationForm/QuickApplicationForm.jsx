@@ -5,14 +5,10 @@ import { formatCurrency, parseCurrency } from '../../utils/formatters';
 import { useNavigate } from 'react-router-dom';
 import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
-const Form = styled(motion.form)`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  gap: 1.2rem;
 `;
 
 const FormTitle = styled.h3`
@@ -33,52 +29,49 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
   font-size: 1rem;
+  transition: all 0.3s ease;
   
   &:focus {
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px rgba(74, 27, 157, 0.1);
     outline: none;
-    border-color: ${props => props.theme.colors.accent};
-  }
-
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 16px;
-    margin-bottom: 0.75rem;
   }
 `;
 
 const Select = styled.select`
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
   font-size: 1rem;
   background: white;
+  cursor: pointer;
   
   &:focus {
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px rgba(74, 27, 157, 0.1);
     outline: none;
-    border-color: ${props => props.theme.colors.accent};
-  }
-
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 16px;
   }
 `;
 
-const SubmitButton = styled(motion.button)`
+const SubmitButton = styled.button`
+  padding: 1.2rem;
   background: ${props => props.theme.colors.secondary};
   color: white;
-  padding: 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
-  
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+
   &:hover {
-    background: ${props => props.theme.colors.accent};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 27, 157, 0.2);
   }
 `;
 

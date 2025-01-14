@@ -100,15 +100,22 @@ const FeatureItem = styled(motion.li)`
 const QuickForm = styled(motion.div)`
   background: white;
   padding: 2.5rem;
-  border-radius: 12px;
+  border-radius: 20px;
   color: ${props => props.theme.colors.text};
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(8px);
+  
+  h2 {
+    color: ${props => props.theme.colors.primary};
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     padding: 1.5rem;
     margin: 0 -1rem;
-    border-radius: 8px;
+    border-radius: 12px;
   }
 `;
 
@@ -145,43 +152,44 @@ const TrustItem = styled.div`
 
 const FundingHighlight = styled.div`
   background: linear-gradient(135deg, 
-    ${props => props.theme.colors.primary} 0%,
-    ${props => props.theme.colors.secondary} 50%,
-    ${props => props.theme.colors.primary} 100%
+    #4A1B9D 0%,
+    #7C3AED 50%,
+    #4A1B9D 100%
   );
-  padding: 1.5rem 2.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 8px 25px rgba(89, 86, 233, 0.25);
-  transform: translateY(-10px);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  animation: pulse 2s infinite;
-
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 8px 25px rgba(89, 86, 233, 0.25);
-    }
-    50% {
-      box-shadow: 0 12px 35px rgba(89, 86, 233, 0.4);
-    }
-    100% {
-      box-shadow: 0 8px 25px rgba(89, 86, 233, 0.25);
-    }
+  padding: 1.8rem 2.5rem;
+  border-radius: 16px;
+  margin: -1rem -1rem 2rem -1rem;
+  box-shadow: 0 8px 25px rgba(74, 27, 157, 0.3);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+      rgba(255,255,255,0.1) 0%,
+      rgba(255,255,255,0.05) 100%
+    );
   }
 `;
 
 const HighlightText = styled.h2`
   color: white;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   margin: 0;
   text-align: center;
   font-weight: 800;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   letter-spacing: 0.5px;
+  position: relative;
   
   span {
     display: block;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     opacity: 0.95;
     margin-top: 0.7rem;
     font-weight: 500;
