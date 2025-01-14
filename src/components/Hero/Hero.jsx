@@ -144,28 +144,48 @@ const TrustItem = styled.div`
 `;
 
 const FundingHighlight = styled.div`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary}, ${props => props.theme.colors.secondary});
-  padding: 1rem 2rem;
-  border-radius: 8px;
+  background: linear-gradient(135deg, 
+    ${props => props.theme.colors.primary} 0%,
+    ${props => props.theme.colors.secondary} 50%,
+    ${props => props.theme.colors.primary} 100%
+  );
+  padding: 1.5rem 2.5rem;
+  border-radius: 12px;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 25px rgba(89, 86, 233, 0.25);
   transform: translateY(-10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  animation: pulse 2s infinite;
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 8px 25px rgba(89, 86, 233, 0.25);
+    }
+    50% {
+      box-shadow: 0 12px 35px rgba(89, 86, 233, 0.4);
+    }
+    100% {
+      box-shadow: 0 8px 25px rgba(89, 86, 233, 0.25);
+    }
+  }
 `;
 
 const HighlightText = styled.h2`
   color: white;
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin: 0;
   text-align: center;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-weight: 800;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  letter-spacing: 0.5px;
   
   span {
     display: block;
-    font-size: 1.1rem;
-    opacity: 0.9;
-    margin-top: 0.5rem;
-    font-weight: 400;
+    font-size: 1.2rem;
+    opacity: 0.95;
+    margin-top: 0.7rem;
+    font-weight: 500;
+    letter-spacing: normal;
   }
 `;
 
