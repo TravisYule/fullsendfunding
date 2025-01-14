@@ -143,6 +143,32 @@ const TrustItem = styled.div`
   }
 `;
 
+const FundingHighlight = styled.div`
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary}, ${props => props.theme.colors.secondary});
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transform: translateY(-10px);
+`;
+
+const HighlightText = styled.h2`
+  color: white;
+  font-size: 2rem;
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  
+  span {
+    display: block;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+    font-weight: 400;
+  }
+`;
+
 const featureVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: i => ({
@@ -223,6 +249,12 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
+          <FundingHighlight>
+            <HighlightText>
+              Get Funded within 24 Hours
+              <span>Quick & Easy Application Process</span>
+            </HighlightText>
+          </FundingHighlight>
           <QuickApplicationForm />
         </QuickForm>
       </Content>
