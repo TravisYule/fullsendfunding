@@ -24,60 +24,47 @@ const PortalLink = styled(PortalButton)`
 
 const TopBar = styled.div`
   background: ${props => props.theme.colors.primary};
-  color: white;
-  padding: 0.5rem 0;
-  font-size: 0.8rem;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    padding: 0.5rem;
-    font-size: 0.75rem;
-  }
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.base};
+  font-size: ${props => props.theme.fontSizes.sm};
 `;
 
 const TopBarContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    gap: 1.5rem;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const TopBarLeft = styled.div`
   display: flex;
-  gap: 3rem;
+  gap: ${props => props.theme.spacing.xl};
 `;
 
 const TopBarItem = styled.a`
-  color: white;
+  color: ${props => props.theme.colors.gray[300]};
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: ${props => props.theme.spacing.sm};
+  transition: ${props => props.theme.transitions.base};
   
   &:hover {
-    color: ${props => props.theme.colors.secondary};
+    color: ${props => props.theme.colors.secondaryLight};
   }
 `;
 
 const HeaderContainer = styled.header`
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
   position: fixed;
   width: 100%;
-  z-index: 1000;
+  z-index: ${props => props.theme.zIndex.sticky};
   height: 90px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: ${props => props.theme.shadows.base};
   top: 28px;
+  border-bottom: 1px solid ${props => props.theme.colors.gray[200]};
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     height: 70px;
@@ -88,7 +75,7 @@ const HeaderContainer = styled.header`
 const Nav = styled.nav`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 ${props => props.theme.spacing.base};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -98,11 +85,11 @@ const Nav = styled.nav`
 const LogoLink = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: ${props => props.theme.spacing.base};
   text-decoration: none;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    gap: 0.5rem;
+    gap: ${props => props.theme.spacing.sm};
   }
 `;
 
@@ -117,68 +104,76 @@ const LogoImage = styled.img`
 
 const CompanyName = styled.h1`
   color: ${props => props.theme.colors.primary};
-  font-size: 1.5rem;
+  font-size: ${props => props.theme.fontSizes.xl};
   font-weight: 600;
   margin: 0;
   white-space: nowrap;
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1rem;
+    font-size: ${props => props.theme.fontSizes.base};
   }
 `;
 
 const NavLinks = styled.div`
   display: flex;
-  gap: 1.5rem;
+  gap: ${props => props.theme.spacing.lg};
   align-items: center;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: ${props => props.isOpen ? 'flex' : 'none'};
     flex-direction: column;
     position: absolute;
-    top: 60px;
+    top: 70px;
     left: 0;
     right: 0;
-    background: white;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: ${props => props.theme.colors.white};
+    padding: ${props => props.theme.spacing.base};
+    box-shadow: ${props => props.theme.shadows.md};
+    border-bottom: 1px solid ${props => props.theme.colors.gray[200]};
     
     a {
-      padding: 0.5rem 0;
+      padding: ${props => props.theme.spacing.sm} 0;
       text-align: center;
+      width: 100%;
     }
   }
 `;
 
 const NavLink = styled(Link)`
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.text.primary};
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
+  font-size: ${props => props.theme.fontSizes.sm};
+  transition: ${props => props.theme.transitions.base};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.base};
   
   &:hover {
     color: ${props => props.theme.colors.secondary};
+    background: ${props => props.theme.colors.gray[100]};
   }
 `;
 
 const ApplyButton = styled(Link)`
   background: ${props => props.theme.colors.secondary};
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  color: ${props => props.theme.colors.white};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
+  border-radius: ${props => props.theme.borderRadius.base};
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
+  font-size: ${props => props.theme.fontSizes.sm};
+  transition: ${props => props.theme.transitions.base};
   
   &:hover {
-    background: ${props => props.theme.colors.accent};
+    background: ${props => props.theme.colors.secondaryDark};
+    transform: translateY(-1px);
+    box-shadow: ${props => props.theme.shadows.md};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: block;
-    margin: 0.5rem 0;
+    margin: ${props => props.theme.spacing.sm} 0;
+    text-align: center;
   }
 `;
 
@@ -238,23 +233,23 @@ const MobileMenu = styled(motion.div)`
     width: 85%;
     max-width: 300px;
     height: 100vh;
-    background: white;
-    padding: 4rem 1.5rem 2rem;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-    transition: right 0.3s ease;
-    z-index: 1000;
+    background: ${props => props.theme.colors.white};
+    padding: ${props => props.theme.spacing['2xl']} ${props => props.theme.spacing.lg} ${props => props.theme.spacing.xl};
+    box-shadow: ${props => props.theme.shadows.lg};
+    transition: ${props => props.theme.transitions.base};
+    z-index: ${props => props.theme.zIndex.modal};
     overflow-y: auto;
 
-    // Add better spacing for touch targets
     a {
-      padding: 1rem;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      background: ${props => props.theme.colors.lightGray};
+      padding: ${props => props.theme.spacing.base};
+      margin: ${props => props.theme.spacing.sm} 0;
+      border-radius: ${props => props.theme.borderRadius.md};
+      background: ${props => props.theme.colors.gray[100]};
+      display: block;
       
       &:active {
         background: ${props => props.theme.colors.primary};
-        color: white;
+        color: ${props => props.theme.colors.white};
       }
     }
   }
@@ -271,7 +266,8 @@ const MobileOverlay = styled(motion.div)`
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    backdrop-filter: blur(4px);
+    z-index: ${props => props.theme.zIndex.overlay};
   }
 `;
 
@@ -279,16 +275,27 @@ const HamburgerButton = styled.button`
   display: none;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
     position: absolute;
-    right: 1rem;
-    top: 1rem;
-    z-index: 100;
+    right: ${props => props.theme.spacing.base};
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: ${props => props.theme.zIndex.dropdown};
     background: none;
     border: none;
     color: ${props => props.theme.colors.primary};
-    font-size: 1.5rem;
+    font-size: ${props => props.theme.fontSizes.xl};
     cursor: pointer;
+    transition: ${props => props.theme.transitions.base};
+    border-radius: ${props => props.theme.borderRadius.base};
+    
+    &:hover {
+      background: ${props => props.theme.colors.gray[100]};
+    }
   }
 `;
 
@@ -302,18 +309,23 @@ const MobileApplyButton = styled(Link)`
     left: 0;
     right: 0;
     background: ${props => props.theme.colors.secondary};
-    color: white;
+    color: ${props => props.theme.colors.white};
     text-align: center;
-    padding: 1rem;
+    padding: ${props => props.theme.spacing.base};
     font-weight: 600;
-    z-index: 1000;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: ${props => props.theme.zIndex.sticky};
+    box-shadow: ${props => props.theme.shadows.lg};
+    font-size: ${props => props.theme.fontSizes.base};
+    
+    &:active {
+      background: ${props => props.theme.colors.secondaryDark};
+    }
   }
 `;
 
 const PortalButtons = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: ${props => props.theme.spacing.base};
   align-items: center;
 `;
 
