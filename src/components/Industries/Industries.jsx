@@ -195,7 +195,7 @@ const industries = [
 
 const Industries = () => {
   return (
-    <Section>
+    <Section id="industries">
       <Container>
         <Header>
           <Title>Industries We Serve</Title>

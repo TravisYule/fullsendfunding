@@ -351,6 +351,16 @@ const Header = () => {
     { title: 'Apply Now', path: '/apply' }
   ];
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If not on home page, go there first then scroll
+      window.location.href = `/#${sectionId}`;
+    }
+  };
+
   return (
     <>
       <TopBar>
@@ -388,7 +398,15 @@ const Header = () => {
               </Dropdown>
             </NavItem>
             <NavLink to="/process" onClick={handleScrollToTop}>How It Works</NavLink>
-            <NavLink to="/faqs" onClick={handleScrollToTop}>FAQs</NavLink>
+            <NavLink 
+              to="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('faqs');
+              }}
+            >
+              FAQs
+            </NavLink>
             <NavLink to="/partner" onClick={handleScrollToTop}>Become A Partner</NavLink>
             <NavLink to="/testimonials" onClick={handleScrollToTop}>Testimonials</NavLink>
             <ApplyButton to="/apply" onClick={handleScrollToTop}>Apply Now</ApplyButton>

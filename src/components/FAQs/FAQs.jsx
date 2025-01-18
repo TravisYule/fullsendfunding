@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const Section = styled.section`
   padding: 5rem 2rem;
   background: white;
+  id: ${props => props.id};
 `;
 
 const Container = styled.div`
@@ -116,7 +117,7 @@ const FAQs = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
-    <Section>
+    <Section id="faqs">
       <Container>
         <Header>
           <Title>Frequently Asked Questions</Title>
