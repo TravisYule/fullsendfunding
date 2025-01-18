@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaHandshake, FaMoneyBillWave, FaChartLine, FaClock, FaHeadset, FaBullhorn } from 'react-icons/fa';
 import { supabase } from '../../utils/supabaseClient';
-import { Link } from 'react-router-dom';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -139,23 +138,6 @@ const ErrorMessage = styled(motion.div)`
   border-radius: 4px;
   margin-bottom: 1rem;
   text-align: center;
-`;
-
-const CTAButton = styled(Link)`
-  width: 100%;
-  padding: 1rem;
-  background: ${props => props.theme.colors.secondary};
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: ${props => props.theme.colors.accent};
-  }
 `;
 
 const benefits = [
@@ -348,7 +330,14 @@ const Partner = () => {
             />
           </FormGroup>
 
-          <CTAButton to="/apply">Get Started</CTAButton>
+          <SubmitButton
+            type="submit"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Partner Application'}
+          </SubmitButton>
         </ContactForm>
       </Container>
     </Section>

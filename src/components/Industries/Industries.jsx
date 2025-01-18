@@ -12,7 +12,6 @@ import {
   FaOilCan,
   FaGlassCheers
 } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 const Section = styled.section`
   padding: 5rem 2rem;
@@ -55,7 +54,7 @@ const IndustriesGrid = styled.div`
   margin-top: 3rem;
 `;
 
-const IndustryCard = styled(Link)`
+const IndustryCard = styled(motion.div)`
   background: ${props => props.theme.colors.lightGray};
   border-radius: 8px;
   padding: 2rem;
@@ -195,7 +194,7 @@ const industries = [
 
 const Industries = () => {
   return (
-    <Section id="industries">
+    <Section>
       <Container>
         <Header>
           <Title>Industries We Serve</Title>
@@ -208,7 +207,13 @@ const Industries = () => {
 
         <IndustriesGrid>
           {industries.map((industry, index) => (
-            <IndustryCard to="/apply" key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+            <IndustryCard
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
               <IconWrapper>{industry.icon}</IconWrapper>
               <IndustryTitle>{industry.title}</IndustryTitle>
               <IndustryDescription>{industry.description}</IndustryDescription>
@@ -217,7 +222,6 @@ const Industries = () => {
                   <BulletItem key={i}>{useCase}</BulletItem>
                 ))}
               </BulletList>
-              <ReadMore>Apply Now</ReadMore>
             </IndustryCard>
           ))}
         </IndustriesGrid>
