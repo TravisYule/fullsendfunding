@@ -343,6 +343,14 @@ const Header = () => {
     handleScrollToTop();
   };
 
+  const navItems = [
+    { title: 'Home', path: '/' },
+    { title: 'Industries', path: '/#industries' },
+    { title: 'FAQs', path: '/#faqs' },
+    { title: 'Partner', path: '/partner' },
+    { title: 'Apply Now', path: '/apply' }
+  ];
+
   return (
     <>
       <TopBar>
