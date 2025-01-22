@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaDollarSign, FaArrowRight, FaArrowLeft, FaCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency, parseCurrency } from '../../utils/formatters';
+import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const CalculatorContainer = styled.div`
   background: ${props => props.theme.colors.lightGray};
@@ -205,6 +206,25 @@ const NavigationButton = styled(motion.button)`
   transition: all 0.3s ease;
 `;
 
+const LoadingContainer = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+`;
+
+const LoadingSpinner = styled(motion.div)`
+  width: 50px;
+  height: 50px;
+  border: 3px solid ${props => props.theme.colors.secondary};
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+`;
+
+const CalculatorContent = styled(motion.div)`
+  width: 100%;
+`;
+
 const FundingCalculator = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -221,6 +241,37 @@ const FundingCalculator = () => {
   });
   const [estimatedAmount, setEstimatedAmount] = useState(null);
   const [error, setError] = useState('');
+  const [ref, controls] = useReanimateOnScroll(0.2);
+
+  const containerVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 50
+    },
+    visible: { 
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const contentVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -565,7 +616,13 @@ const FundingCalculator = () => {
         <SectionSubtitle>
           See how much funding you may qualify for in just a few simple steps
         </SectionSubtitle>
-        <CalculatorContainer>
+        
+        <CalculatorContainer
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={containerVariants}
+        >
           <StepIndicator>
             {[1, 2, 3, 4].map((i) => (
               <Step 
@@ -579,6 +636,7 @@ const FundingCalculator = () => {
               />
             ))}
           </StepIndicator>
+
           <AnimatePresence mode="wait">
             {renderStep()}
           </AnimatePresence>
