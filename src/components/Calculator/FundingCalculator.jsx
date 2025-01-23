@@ -7,17 +7,18 @@ import { formatCurrency, parseCurrency } from '../../utils/formatters';
 import { useReanimateOnScroll } from '../../hooks/useReanimateOnScroll';
 
 const CalculatorContainer = styled.div`
-  background: ${props => props.theme.colors.lightGray};
+  background: rgba(255, 75, 75, 0.03);
   padding: 3rem 2rem;
   border-radius: 12px;
   max-width: 600px;
   margin: 0 auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(255, 75, 75, 0.08);
   transition: all 0.3s ease;
+  border: 1px solid rgba(255, 75, 75, 0.1);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 25px rgba(255, 75, 75, 0.15);
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
