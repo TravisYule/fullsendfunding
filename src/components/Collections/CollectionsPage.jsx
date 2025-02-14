@@ -8,10 +8,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, 
-    rgb(74, 27, 157) 0%,
-    rgb(124, 58, 237) 100%
-  );
+  background: ${props => props.theme.colors.primary};
   padding: 2rem;
 `;
 
