@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaThumbsUp } from 'react-icons/fa';
+import { FaThumbsUp, FaUserSecret } from 'react-icons/fa';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -22,6 +22,7 @@ const Card = styled(motion.div)`
   text-align: center;
   max-width: 600px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
 `;
 
 const ThumbsUp = styled(motion.div)`
@@ -56,6 +57,38 @@ const FinalMessage = styled(motion.p)`
   font-size: 1.8rem;
   font-weight: 800;
   margin-top: 1rem;
+`;
+
+const HiddenBob = styled(motion.div)`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1.5rem;
+  opacity: 0.1;
+  cursor: pointer;
+  color: ${props => props.theme.colors.primary};
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.2);
+    
+    .bob-text {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .bob-text {
+    font-size: 0.8rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
 `;
 
 const CollectionsPage = () => {
@@ -112,6 +145,15 @@ const CollectionsPage = () => {
         >
           Payup or Shutup
         </FinalMessage>
+        
+        <HiddenBob
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.1 }}
+          transition={{ delay: 2 }}
+        >
+          <FaUserSecret />
+          <span className="bob-text">Little Bob is watching...</span>
+        </HiddenBob>
       </Card>
     </Container>
   );
