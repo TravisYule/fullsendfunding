@@ -8,7 +8,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #4A1B9D 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, 
+    ${props => props.theme.colors.primary} 0%,
+    ${props => props.theme.colors.secondary} 100%
+  );
   padding: 2rem;
 `;
 
