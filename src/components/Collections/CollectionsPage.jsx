@@ -41,7 +41,21 @@ const Message = styled(motion.p)`
   color: ${props => props.theme.colors.text};
   font-size: 1.5rem;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const SubMessage = styled(motion.p)`
+  color: ${props => props.theme.colors.secondary};
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+`;
+
+const FinalMessage = styled(motion.p)`
+  color: ${props => props.theme.colors.primary};
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-top: 1rem;
 `;
 
 const CollectionsPage = () => {
@@ -84,6 +98,20 @@ const CollectionsPage = () => {
           We're here to help you recover what's rightfully yours. 
           Let's make it happen! 💪
         </Message>
+        <SubMessage
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          Big Bobby is going to check under your bed!
+        </SubMessage>
+        <FinalMessage
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1 }}
+        >
+          Payup or Shutup
+        </FinalMessage>
       </Card>
     </Container>
   );
